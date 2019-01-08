@@ -57,22 +57,22 @@ error:
 # ---------------------------------------------------------------------------------------
 colon:                 ':'
 separator:             '|'
-category_start:        'in '
+category_start:        '分类：'
 category_spearator:    ' / '
-tag_start:             'on '
-tag_separator:         ', '
+tag_start:             '标签：'
+tag_separator:         '  '
 from_to_separator:     '–'
 
 # Date formats
 # ---------------------------------------------------------------------------------------
 date_formats:
-  post:                '%d %b %Y'
-  related_post:        '%d %b %Y'
+  post:                '%Y-%m-%d'
+  related_post:        '%Y-%m-%d'
   list_group_by:       '%Y'
-  list_entry:          '%d %b'
+  list_entry:          '%m-%d'
   project:             '%Y'
   projects_group_by:   '%Y'
-  resume:              '%b %Y'
+  resume:              '%Y-%m-%d'
 
 
 # PRO Version

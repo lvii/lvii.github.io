@@ -4,52 +4,50 @@
 # IMPORTANT: Set the URL of your site.
 # Set to https://<username>.github.io when hosting on GitHub Pages
 # (unless you are using a custom domain).
-# url:                   https://<username>.github.io
+url:                   https://lvii.github.io
 
 # IMPORTANT: Set The "base URL" of your site.
 # When your site sits in a subdirectory, set to /<name of directory>
 # (with leading /, but without the < >).
 # Use the empty string '' otherwise.
-# For GitHub project sites, this is usually the name of the project,
-# e.g. `/hydejack`.
-# baseurl:               ''
+#
+# When using GitHub Pages, set to '' when hosting a user- or organization page,
+# i.e. when the name of the repository looks like <username>.github.io.
+# Otherwise, set to /<name of repository> (with leading /, but without the < >).
+baseurl:               ''
 
 # Language of your content in 2-letter code, e.g.: en, de.
 # You may also provide a location, e.g.: en-us, de_AT.
 lang:                  en
 
 # The title of your blog. Used in the sidebar and the browser tab.
-title:                 Hydejack Starter Kit
+title:                 小马过河
 
 # A short description (~150 chars) of the page used for the meta description tag.
 # Can use markdown, but no more than one paragraph (enforced by `>`)
 description:           >
-  A Jekyll theme with JavaScript powers. "Best Theme by a Mile".
-  Combines the best of static sites and modern web apps.
-  Open `_config.yml` to edit this text.
+  blog about linux system administration and opensource
 
 # A shorter description for the sidebar.
 tagline:               >
-  Open `_config.yml` to edit this text.
+  **纸上得来终觉浅** <br/> **绝知此事要躬行**
 
 # A list of keywords for your blog.
-keywords:              []
+keywords:              [linux, opensource]
 
 # Used by jekyll-seo-tag.
-logo:                  /assets/icons/icon.png
+# logo:                  /assets/icons/icon.png
 
 # This should be the same author as first entry in `_data/authors.yml`.
 author:
-  # Used by `jekyll-feed`:
-  name:                <firstname> <lastname>
-  email:               <mail@domain.tld>
+  name:                lvii
+  email:               volcanowill@gmail.com
   # Used by `jekyll-seo-tag`:
-  # twitter:             <username>
+  github:              lvii
 
 # This text will appear in a `<small>` tag in the footer of every page.
 copyright:             >
   © 2018. All rights reserved.
-  Open `_config.yml` to edit this text.
 
 # Add links to the footer.
 # Typically you'll want to link to your impress, cookies or privacy policy, etc.
@@ -71,21 +69,24 @@ paginate_path:         /page-:num/
 # ========================================================================================
 
 # Sidebar image and theme color of the site.
-accent_image:          /assets/img/sidebar-bg.jpg
-accent_color:          rgb(79,177,186)
+accent_image:          none
+accent_color:          '#3fa757'    ## green leaf
+#accent_color:          '#4683e9'    ## google blue
 
 # This is used for the `theme-color` meta tag,
 # which changes the background color of the browser UI in certain browsers.
 # Defaults to `accent_color`.
-theme_color:           rgb(25,55,71)
+theme_color:           '#3fa757'    ## green leaf
 
 # The string encoding which fonts to fetch from Google Fonts.
-# See: <https://hydejack.com/docs/configuration/>
-google_fonts:          Roboto+Slab:400|Noto+Sans:400,400i,700,700i
+# See: <https://qwtel.com/hydejack/docs/configuration/>
+google_fonts:          PT+Sans:400,400i,700|Roboto+Slab:700|Noto+Sans:400,400i,700,700i
+
+# 引用中文宋体
+# google_fonts:          Noto+Serif+SC:400,700|PT+Sans:400,400i,700|Roboto+Slab:700|Noto+Sans:400,400i,700,700i
 
 # The text font. Expects a string that is a valid CSS font-family value.
-# To change font-weight, see _sass/variables.scss
-font:                  Noto Sans, Helvetica, Arial, sans-serif
+font:                  PT Sans, Noto Sans, Helvetica, Arial, sans-serif
 
 # The font used for headings. Expects a string that is a valid CSS font-family value.
 # To change font-weight, see _sass/variables.scss
@@ -116,11 +117,11 @@ defaults:
 
 # Set your Google Analytics id to receive `pageview` events.
 # To remove Google Anaylics from your page, remove the line below.
-# google_analytics:      UA-XXXXXXXX-X
+google_analytics:      UA-125236126-1
 
 # Setting a disqus shortname will enable the comment section on
 # pages with `comments: true` in the front matter.
-# disqus:                <disqus_shortname>
+disqus:                lvii
 
 # Setting a tinyletter username will enable the newsletter subscription box.
 # PRO version only!
@@ -133,7 +134,8 @@ defaults:
 
 hydejack:
   # Configure the order of complementary content on blog posts
-  post_addons:         [about, newsletter, related]
+  # post_addons:         [about, newsletter, related]
+  post_addons:         []
 
   # Configure the order of complementary content on project pages
   project_addons:      [about, newsletter, other]
@@ -151,7 +153,7 @@ hydejack:
   no_drawer:           false
 
   # Set to `true` to prevent usage of `hy-img` (lazy-loading images).
-  no_img:              false
+  no_img:              true
 
   # Set to `true` if you do not want parts of the css inlined in <head/>
   # This *may* be benefitial when serving the site over HTTP/2.
@@ -174,7 +176,7 @@ hydejack:
 
   # When using Google Analytics, set to `true` to display a cookie notice banner.
   # When enabled, no user-related data will be stored until the user gives consent.
-  cookies_banner:      false
+  cookies_banner:      true
 
   # ⚡️ DANGER ZONE ⚡️
   # ----------------
@@ -190,11 +192,11 @@ hydejack:
 
 collections:
   featured_categories:
-    permalink:         /:name/
+    permalink:         /category/:name/
     output:            true
 
   featured_tags:
-    permalink:         /tag-:name/
+    permalink:         /tag/:name/
     output:            true
 
   projects:
@@ -209,6 +211,11 @@ exclude:
   - vendor
   - Gemfile
   - Gemfile.lock
+  - node_modules
+  - package.json
+  - package-lock.json
+include:
+  - LICENSE.md
 
 
 # Plugins and Plugin Configuration
@@ -246,7 +253,7 @@ remote_theme: qwtel/hydejack@v8.1.1
 
 # Used for Twitter cards
 # twitter:
-#   username:            <twitter handle>
+#   username:            <shortname>
 
 # Used for Facebook open graph
 # facebook:
@@ -256,10 +263,9 @@ remote_theme: qwtel/hydejack@v8.1.1
 
 # Used on index and about sites
 # social:
-#   name:                <firstname> <lastname>
+#   name:                果冻
 #   links:
-#     - https://twitter.com/<username>
-#     - https://github.com/<username>
+#     - https://github.com/lvii
 
 
 # Other Plugins
@@ -276,7 +282,8 @@ relative_links:
   collections:         true
 
 titles_from_headings:
-  strip_title:         true
+  enabled:             false
+  strip_title:         false
   collections:         true
 
 kramdown:
@@ -285,6 +292,7 @@ kramdown:
   math_engine_opts:
     preview:           true
     preview_as_code:   true
+#  syntax_highlighter:  rouge
 
 compress_html:
   comments:            ['<!-- ', ' -->']

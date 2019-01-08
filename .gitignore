@@ -40,3 +40,14 @@ _site
 # Bundler
 /.bundle
 /vendor/bundle
+
+# delete from upstream example files
+_featured_categories/example.md
+_nojekyll/*
+assets/img/*
+example/*
+about.md
+docs.md
+
+
+

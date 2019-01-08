@@ -1,1 +1,83 @@
 // You can add CSS rules here that will be inlined into each document.
+
+// https://github.com/qwtel/hydejack/blob/master/_sass/_variables.scss
+
+// https://github.com/qwtel/hydejack/blob/master/_sass/hydejack/_sidebar.pre.scss
+
+.post>blockquote {
+  padding: .5rem 1rem .5rem .75rem;
+  margin: .8rem 0 .8rem -1rem;
+}
+
+.post>ol, .post>ul {
+  margin-left: -1.25rem;
+}
+
+ul {
+  list-style: square;
+}
+
+.post h1, .post h2, .post h3, .post h4, .post h5, .post h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    margin: 1rem 0 !important;
+}
+
+code, pre {
+  font-family: "Source Code Pro", "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Consolas, Menlo, monospace;
+}
+
+pre, .highlight {
+  margin-bottom: 1rem !important;
+}
+
+hr.dingbat::after {
+  content: "\2731" !important; // ✱
+}
+
+table:not(.highlight) thead+tbody,table:not(.highlight) tbody+tbody,table:not(.highlight) tfoot {
+  border-top: 1px solid var(--border-color) !important;
+}
+
+
+.title-list {
+  list-style: none;
+  margin-bottom: .5rem;
+  padding-left: 0 !important;
+}
+.title-list li {
+  list-style: none;
+  margin-top: 0 !important;
+  width: 50rem;
+}
+.title-list li a {
+  display: block;
+  font-weight: 700;
+  line-height: 1.75;
+  padding: .25rem 0;
+  font-family: Roboto Slab, Helvetica, Arial, sans-serif !important;
+  // enable 宋体
+  // font-family: Roboto Slab, Noto Serif SC, Helvetica, Arial, sans-serif !important;
+}
+.title-list li span {
+  float: right;
+  color: #888;
+  font-family: PT Sans, Noto Sans, Helvetica, Arial, sans-serif !important;
+}
+
+
+
+.button {
+  border-radius: 0.2em;
+  border: 1px solid;
+  display: inline-block;
+  margin: 1em 0;
+  // padding: 0.1em 0.75em 0.2em 0.75em;
+  padding: 0.2em 0.75em;
+}
+
+.button-link:hover, a.button:hover {
+  background: #3fa757;
+  border: 1px solid #3fa757;
+  color: #fff !important;
+  text-decoration: none;
+}
+

@@ -1,6 +1,12 @@
 ---
-layout: blog
-title: Blog
-cover: true
-image: /assets/img/hydejack-8.png
+layout: base
 ---
+
+<ul class="title-list">
+  {% for post in site.posts %}
+  <li>
+    <a href="{{ post.url | relative_url }}">{{ post.title }} <span>{{ post.date | date:"%Y-%m-%d" }}</span></a>
+  </li>
+  {% endfor %}
+  <br/>
+</ul>
