@@ -5,8 +5,13 @@ https://github.com/qwtel/hydejack-starter-kit
 
 # files
 
-    $ mkdir _nojekyll
-    $ mv docs.md about.md index.html _featured_categories/example.md assets/img/ example/ _nojekyll/
+    $ mkdir _nojekyll && mv -iv docs.md about.md index.html _featured_categories/example.md assets/img/ example/ _nojekyll/
+    ‘docs.md’ -> ‘_nojekyll/docs.md’
+    ‘about.md’ -> ‘_nojekyll/about.md’
+    ‘index.html’ -> ‘_nojekyll/index.html’
+    ‘_featured_categories/example.md’ -> ‘_nojekyll/example.md’
+    ‘assets/img/’ -> ‘_nojekyll/img’
+    ‘example/’ -> ‘_nojekyll/example’
 
     $ git status
     # On branch master
