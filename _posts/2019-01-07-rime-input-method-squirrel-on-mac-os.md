@@ -137,3 +137,9 @@ Squirrel 内置 **候选框** 样式：<https://gist.github.com/wd/26e0ce3751e2b
 <https://github.com/xiaoTaoist/rime-dict>
 
 [Rime 詞庫](https://github.com/rime-aca/dictionaries)
+
+<br/>
+
+本文标题 | [{{ page.title }}]({{ page.url }})
+-------- |:--------
+原始链接 | <{{ site.url }}{{ page.url }}>
