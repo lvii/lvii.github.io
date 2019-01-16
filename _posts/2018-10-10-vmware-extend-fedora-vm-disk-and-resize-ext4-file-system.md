@@ -85,6 +85,12 @@ Fedora 29 前两天已经 Final Freeze 了，准备从 Fedora 28 升级到 Fedor
     (parted) q
     Information: You may need to update /etc/fstab.
 
+**TIPS：** 使用 `growpart` 可以更简单的扩展分区，树莓派就是用 `growpart` 扩展 SD 卡分区的：
+
+<https://docs.fedoraproject.org/en-US/quick-docs/raspberry-pi/#booting-fedora-on-a-raspberry-pi-for-the-first-time_rpi>
+
+<https://fedoraproject.org/wiki/Architectures/ARM/Raspberry_Pi#Resize_after_initial-setup>
+
 ## 文件系统自检
 
 分区调整好后，使用 `e2fsck` **自检** 分区上的文件系统：
