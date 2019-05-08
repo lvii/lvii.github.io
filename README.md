@@ -1,4 +1,8 @@
 
+# Hydejack
+
+https://github.com/qwtel/hydejack/releases
+
 # Hydejack Starter Kit
 
 https://github.com/qwtel/hydejack-starter-kit
@@ -91,10 +95,14 @@ https://github.com/qwtel/hydejack-starter-kit
 
 # update
 
+https://help.github.com/en/articles/syncing-a-fork
+
     git remote add upstream https://github.com/qwtel/hydejack-starter-kit.git
     git fetch upstream
     git status
-    git pull upstream master ( git rebase/merge | git merge upstream/master )
+    git merge upstream/master
+
+    git log --graph --date=short -6
 
 [Fork 的分支从源分支更新的方法](https://github.com/BearRan/CRAnimation/wiki/Fork的分支从源分支更新的方法)
 
@@ -125,8 +133,7 @@ https://stackoverflow.com/questions/6366188/jekyll-select-current-page-url-and-c
     {{ page.relative_path }}
     {{ page.relative_path | replace:'index.html', '' | remove: '_blocks/' | prepend: site.baseurl }}
 
-
-# font
+## font
 
 `_config.yml` 引用 google 宋体：
 
@@ -152,7 +159,7 @@ https://fonts.google.com/specimen/Noto+Serif+SC
 
 [Google Fonts 已支持思源宋体！2018-12-11](https://reuixiy.github.io/beautiful/share/2018/12/11/noto-serif-sc-added-on-google-fonts.html)
 
-# autolink
+## autolink
 
     $ git diff _config.yml
 
@@ -175,6 +182,8 @@ https://fonts.google.com/specimen/Noto+Serif+SC
        gem "jekyll-titles-from-headings"
     +  gem "jekyll-commonmark-ghpages"
      end
+
+## install
 
     $ bundle install
     Warning: the running version of Bundler (1.13.7) is older than the version that created the lockfile (1.16.1).
@@ -234,3 +243,24 @@ https://fonts.google.com/specimen/Noto+Serif+SC
     Bundle complete! 16 Gemfile dependencies, 48 gems now installed.
     Use `bundle show [gemname]` to see where a bundled gem is installed.
 
+## serve
+
+    $ bundle exec jekyll serve --host 0.0.0.0 -w -b /tech
+    Configuration file: /home/user/lvii.github.io/_config.yml
+    Invalid theme folder: _sass
+          Remote Theme: Using theme qwtel/hydejack
+                Source: /home/user/lvii.github.io
+           Destination: /home/user/lvii.github.io/_site
+     Incremental build: disabled. Enable with --incremental
+          Generating...
+    Invalid theme folder: _sass
+          Remote Theme: Using theme qwtel/hydejack
+           Jekyll Feed: Generating feed for posts
+                        done in 11.187 seconds.
+     Auto-regeneration: enabled for '/home/user/lvii.github.io'
+        Server address: http://0.0.0.0:4000/tech/
+      Server running... press ctrl-c to stop.
+
+## build
+
+    jekyll build -w
