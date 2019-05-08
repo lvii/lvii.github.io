@@ -4,58 +4,69 @@
 # IMPORTANT: Set the URL of your site.
 # Set to https://<username>.github.io when hosting on GitHub Pages
 # (unless you are using a custom domain).
-url:                   https://lvii.github.io
+# url:                   https://<username>.github.io
 
 # IMPORTANT: Set The "base URL" of your site.
 # When your site sits in a subdirectory, set to /<name of directory>
 # (with leading /, but without the < >).
 # Use the empty string '' otherwise.
-#
-# When using GitHub Pages, set to '' when hosting a user- or organization page,
-# i.e. when the name of the repository looks like <username>.github.io.
-# Otherwise, set to /<name of repository> (with leading /, but without the < >).
-baseurl:               ''
+# For GitHub project sites, this is usually the name of the project,
+# e.g. `/hydejack`.
+# baseurl:               ''
 
 # Language of your content in 2-letter code, e.g.: en, de.
 # You may also provide a location, e.g.: en-us, de_AT.
 lang:                  en
 
 # The title of your blog. Used in the sidebar and the browser tab.
-title:                 小马过河
+title:                 Hydejack Starter Kit
 
 # A short description (~150 chars) of the page used for the meta description tag.
 # Can use markdown, but no more than one paragraph (enforced by `>`)
 description:           >
-  blog about linux system administration and opensource
+  "Best Jekyll Theme by a Mile".
+  **Hydejack** is your presence on the web, featuring a blog, portfolio, and resume.
+  Open `_config.yml` to edit this text.
 
 # A shorter description for the sidebar.
 tagline:               >
-  **纸上得来终觉浅** <br/> **绝知此事要躬行**
+  "Best Jekyll Theme by a Mile".
+  Open `_config.yml` to edit this text.
 
-# A list of keywords for your blog.
-keywords:              [linux, opensource]
+# A list of keywords for your blog
+keywords:              []
 
-# Used by jekyll-seo-tag.
-# logo:                  /assets/icons/icon.png
+# A (square) logo for your site.
+# If provided, it will be shown at the top of the sidebar.
+# It also used by the `jekyll-seo-tag` plugin.
+logo:                  /assets/icons/icon.png
 
 # This should be the same author as first entry in `_data/authors.yml`.
 author:
-  name:                lvii
-  email:               volcanowill@gmail.com
+  name:                <firstname> <lastname>
+  email:               <mail@domain.tld>
   # Used by `jekyll-seo-tag`:
-  github:              lvii
+  # twitter:             <username>
 
-# This text will appear in a `<small>` tag in the footer of every page.
-copyright:             >
-  © 2018. All rights reserved.
+# Add links to the sidebar.
+menu:
+  - title:             Example
+    url:               /example/
+  - title:             Documentation
+    url:               https://hydejack.com/docs/
+  - title:             About
+    url:               /about/
 
 # Add links to the footer.
-# Typically you'll want to link to your impress, cookies or privacy policy, etc.
+# Typically you'll want to link to your cookie- or privacy policy (if appliable), etc..
 # legal:
 #   - title:             Impress
-#     href:              /impress/
+#     url:               /impress/
 #   - title:             Cookies Policy
-#     href:              /cookies-policy/
+#     url:               /cookies-policy/
+
+# This text will appear in a `<small>` tag in the footer of every page.
+copyright:             © 2019. All rights reserved. Open `_config.yml` to edit this text.
 
 # Format of the permalinks
 permalink:             /:categories/:year-:month-:day-:title/
@@ -69,24 +80,21 @@ paginate_path:         /page-:num/
 # ========================================================================================
 
 # Sidebar image and theme color of the site.
-accent_image:          none
-accent_color:          '#3fa757'    ## green leaf
-#accent_color:          '#4683e9'    ## google blue
+accent_image:          /assets/img/sidebar-bg.jpg
+accent_color:          rgb(79,177,186)
 
 # This is used for the `theme-color` meta tag,
 # which changes the background color of the browser UI in certain browsers.
 # Defaults to `accent_color`.
-theme_color:           '#3fa757'    ## green leaf
+theme_color:           rgb(25,55,71)
 
 # The string encoding which fonts to fetch from Google Fonts.
-# See: <https://qwtel.com/hydejack/docs/configuration/>
-google_fonts:          PT+Sans:400,400i,700|Roboto+Slab:700|Noto+Sans:400,400i,700,700i
-
-# 引用中文宋体
-# google_fonts:          Noto+Serif+SC:400,700|PT+Sans:400,400i,700|Roboto+Slab:700|Noto+Sans:400,400i,700,700i
+# See: <https://hydejack.com/docs/configuration/>
+google_fonts:          Roboto+Slab:400|Noto+Sans:400,400i,700,700i
 
 # The text font. Expects a string that is a valid CSS font-family value.
-font:                  PT Sans, Noto Sans, Helvetica, Arial, sans-serif
+# To change font-weight, see _sass/variables.scss
+font:                  Noto Sans, Helvetica, Arial, sans-serif
 
 # The font used for headings. Expects a string that is a valid CSS font-family value.
 # To change font-weight, see _sass/variables.scss
@@ -117,16 +125,14 @@ defaults:
 
 # Set your Google Analytics id to receive `pageview` events.
 # To remove Google Anaylics from your page, remove the line below.
-google_analytics:      UA-125236126-1
+# google_analytics:      UA-XXXXXXXX-X
 
 # Setting a disqus shortname will enable the comment section on
 # pages with `comments: true` in the front matter.
-disqus:                lvii
+# disqus:                <disqus_shortname>
 
 # Setting a tinyletter username will enable the newsletter subscription box.
-# PRO version only!
 # tinyletter:            <tinyletter_username>
-
 
 # Hydejack Settings
 # ----------------------------------------------------------------------------------------
@@ -134,8 +140,7 @@ disqus:                lvii
 
 hydejack:
   # Configure the order of complementary content on blog posts
-  # post_addons:         [about, newsletter, related]
-  post_addons:         []
+  post_addons:         [about, newsletter, related, random]
 
   # Configure the order of complementary content on project pages
   project_addons:      [about, newsletter, other]
@@ -144,7 +149,7 @@ hydejack:
   no_google_fonts:     false
 
   # Set to `true` if you don't want to show an icon indicating external links
-  no_mark_external:    false
+  no_mark_external:    true
 
   # Set to `true` if third party plugins fail to work with dynamically loaded pages
   no_push_state:       false
@@ -153,11 +158,15 @@ hydejack:
   no_drawer:           false
 
   # Set to `true` to prevent usage of `hy-img` (lazy-loading images).
-  no_img:              true
+  no_img:              false
 
   # Set to `true` if you do not want parts of the css inlined in <head/>
-  # This *may* be benefitial when serving the site over HTTP/2.
+  # This will increase site build speed dramatically!
   no_inline_css:       false
+
+  # Set to `true` if you don't intend on changing the accent color on a per-page basis.
+  # This will increase site build speed!
+  no_page_style:       false
 
   # Code blocks and tables "break" the layout by spanning the full available width.
   # Set this to true if you want them to be the same width as other content.
@@ -172,31 +181,51 @@ hydejack:
   no_theme_color:      false
 
   # Set to `true` when building with the `--lsi` option
+  # This will increase site build speed!
   use_lsi:             false
 
   # When using Google Analytics, set to `true` to display a cookie notice banner.
   # When enabled, no user-related data will be stored until the user gives consent.
-  cookies_banner:      true
+  # Note that this works in the PRO version of Hydejack.
+  cookies_banner:      false
+
+  # Set to `true` if you would like to add a "Powered by Hydejack" link in the footer.
+  # Note that this works in the PRO version of Hydejack.
+  advertise:           false
+
+  # Dark Mode for Hydejack
+  # Note that this works in the PRO version of Hydejack.
+  dark_mode:
+    # Set to `true` to always use the dark theme.
+    always:            false
+
+    # Set to `true` to use the dark theme based on visitors' local time.
+    dynamic:           true
+    sunrise:           6
+    sunset:            18
+
+    # Set to `true` to allow visitors to switch between light and dark mode.
+    icon:              true
 
   # ⚡️ DANGER ZONE ⚡️
   # ----------------
   # This is an _experimental_ feature.
   # Only use if you know what Service Workers are and how they can impact your site!
-  # Coding skills highly recommended.
   offline:
     enabled:           false
     cache_version:     1
+
 
 # Collections
 # ========================================================================================
 
 collections:
   featured_categories:
-    permalink:         /category/:name/
+    permalink:         /:name/
     output:            true
 
   featured_tags:
-    permalink:         /tag/:name/
+    permalink:         /tag-:name/
     output:            true
 
   projects:
@@ -214,11 +243,16 @@ exclude:
   - node_modules
   - package.json
   - package-lock.json
+  - webpack.config.js
+  - "*.gemspec"
+  - _js
+  - _plugins
+  - .sass-cache
 include:
   - LICENSE.md
 
 
-# Plugins and Plugin Configuration
+# Plugins
 # ========================================================================================
 
 plugins:
@@ -236,8 +270,8 @@ plugins:
 # Theme
 # ---------------------------------------------------------------------------------------
 
-remote_theme: qwtel/hydejack@v8.1.1
-
+# theme: jekyll-theme-hydejack
+remote_theme: qwtel/hydejack@v8.4.0
 
 # SEO Tag
 # ---------------------------------------------------------------------------------------
@@ -263,9 +297,10 @@ remote_theme: qwtel/hydejack@v8.1.1
 
 # Used on index and about sites
 # social:
-#   name:                果冻
+#   name:                <firstname> <lastname>
 #   links:
-#     - https://github.com/lvii
+#     - https://twitter.com/<username>
+#     - https://github.com/<username>
 
 
 # Other Plugins
@@ -282,8 +317,7 @@ relative_links:
   collections:         true
 
 titles_from_headings:
-  enabled:             false
-  strip_title:         false
+  strip_title:         true
   collections:         true
 
 kramdown:
@@ -292,12 +326,13 @@ kramdown:
   math_engine_opts:
     preview:           true
     preview_as_code:   true
-#  syntax_highlighter:  rouge
 
 compress_html:
-  comments:            ['<!-- ', ' -->']
+  comments:            ["<!-- ", " -->"]
   clippings:           all
   endings:             all
+  ignore:
+    envs:              [development]
 
 sass:
   style:               compressed
