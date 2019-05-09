@@ -9,16 +9,16 @@ tags: [bios]
 
 厂里有一批 **过保** 的 Supermicro 3U8 机器 CPU 没有启用 **超线程**
 
-虽然超微 3U8 机型 [X9SRD-F](https://www.supermicro.com/products/motherboard/Xeon/C600/X9SRD-F.cfm) 主板使用的也是 AMI 的 BIOS
+虽然超微 3U8 机型 [X9SRD-F](https://www.supermicro.com/products/motherboard/Xeon/C600/X9SRD-F.cfm) 主板使用的也是 **AMI BIOS**
 
 > BIOS Type: 32Mb SPI Flash EEPROM with ***AMI BIOS***
 
-之前针对 H3C 机型的 `SCELNX` 工具不能用：
+但之前针对 H3C 机型修改 BIOS 的 `SCELNX` 工具不能用：
 
     # SCELNX_64 /o /lang /s BIOS-with-map-string.cfg /hb
     Platform identification failed.
 
-看来得用超微自己的 SUM 工具来修改
+AMI 官网也没找到适配该主板的工具下载，只得用超微自己的 SUM 工具来修改
 
 # WHAT
 
@@ -30,6 +30,8 @@ tags: [bios]
 > - Get Current/Default BIOS Settings
 > - Change BIOS settings
 > - Get/Change/Edit DMI Information
+
+下载页面随便填一下用户和邮箱，即可跳转至真正的下载页面：
 
 ![img](https://i.imgur.com/mIjp5kF.png)
 
@@ -57,7 +59,7 @@ tags: [bios]
 
 # HOW
 
-当前 CPU 没启用超线程只有 4 个核：
+当前 CPU 没启用超线程，只有 4 个核：
 
     # dmidecode -t processor | grep -E '(Core Count|Thread Count)'
             Core Count: 4
@@ -89,11 +91,11 @@ tags: [bios]
 
 ## License Key
 
-使用 `sum` 工具修改 BIOS 需要 License Key 厂里的机器也都没有 `-_-;`
+使用 `sum` 工具修改 BIOS 需要 License Key 厂里的机器也都没有 --.
 
-好在超微 **旧机型(2012-2018)** 的 License 算法已经被 **逆向** 出来了：
+好在超微 **旧机型 (2012-2018)** 的 License 算法已经被 **逆向** 出来了：
 
-[Reverse Engineering Supermicro IPMI 2018-05-27](https://peterkleissner.com/2018/05/27/reverse-engineering-supermicro-ipmi/)
+> [Reverse Engineering Supermicro IPMI 2018-05-27](https://peterkleissner.com/2018/05/27/reverse-engineering-supermicro-ipmi/)
 
 根据 OOB Mac 地址计算 License Key ：
 
@@ -117,7 +119,7 @@ tags: [bios]
     [0] OOB
     Number of product keys: 1
 
-然后就可以使用 `sum` 工具配置 BIOS 了，先查看当前 BIOS 里超线程 HT 的配置项：
+然后就可以使用 `sum` 工具配置 BIOS 了，先查看当前 BIOS 里的 **超线程 HT** 配置项：
 
     # ./sum -c GetCurrentBiosCfg |grep -C3 -i thread
     [Advanced|CPU Configuration]
@@ -137,7 +139,7 @@ tags: [bios]
     [Advanced|CPU Configuration]
     Hyper-threading=01                      // 00 (Disabled), *01 (Enabled)
 
-最后 `sum` 通过指定的 **配置文件** 修改 BIOS ：
+最后 `sum` 通过生成的 **启用 HT 配置文件** 修改 BIOS ：
 
     # ./sum -c ChangeBiosCfg --file ht.cfg
     Supermicro Update Manager (for UEFI BIOS) 2.2.0 (2019/02/20) (x86_64)
@@ -188,3 +190,8 @@ tags: [bios]
     Execute Disable Bit=01                  // 00 (Disabled), *01 (Enabled)
     Intel(R) AES-NI=01                      // 00 (Disabled), *01 (Enabled)
 
+<br/>
+
+本文标题 | [{{ page.title }}]({{ page.url }})
+-------- |:--------
+原始链接 | <{{ site.url }}{{ page.url }}>
