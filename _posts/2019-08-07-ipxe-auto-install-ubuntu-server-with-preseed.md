@@ -87,192 +87,195 @@ preseed 文件要实现真正自动化，需要不少 hack 和 CentOS 的 kickst
 
 最后汇总的 preseed 配置如下：
 
-    d-i debian-installer/locale string en_US
+``` conf
+d-i debian-installer/locale string en_US
 
-    d-i console-setup/ask_detect boolean false
-    d-i keyboard-configuration/xkb-keymap select us
-    d-i keyboard-configuration/layoutcode string us
+d-i console-setup/ask_detect boolean false
+d-i keyboard-configuration/xkb-keymap select us
+d-i keyboard-configuration/layoutcode string us
 
-    d-i clock-setup/utc boolean false
-    d-i clock-setup/ntp boolean false
-    d-i time/zone string Asia/Shanghai
+d-i clock-setup/utc boolean false
+d-i clock-setup/ntp boolean false
+d-i time/zone string Asia/Shanghai
 
-    d-i hw-detect/load_firmware boolean true
+d-i hw-detect/load_firmware boolean true
 
-    #    _  ____________  _________  _  _______________
-    #   / |/ / __/_  __/ / ___/ __ \/ |/ / __/  _/ ___/
-    #  /    / _/  / /   / /__/ /_/ /    / _/_/ // (_ /
-    # /_/|_/___/ /_/    \___/\____/_/|_/_/ /___/\___/
-    #
+#    _  ____________  _________  _  _______________
+#   / |/ / __/_  __/ / ___/ __ \/ |/ / __/  _/ ___/
+#  /    / _/  / /   / /__/ /_/ /    / _/_/ // (_ /
+# /_/|_/___/ /_/    \___/\____/_/|_/_/ /___/\___/
+#
 
-    # NOTE: not work without iPXE boot option: interface=auto
-    d-i netcfg/choose_interface select auto
+# NOTE: not work without iPXE boot option: interface=auto
+d-i netcfg/choose_interface select auto
 
-    # Static Network
-    # NOTE: not work without iPXE boot option: auto=true priority=critical
-    d-i preseed/early_command string kill-all-dhcp; netcfg
+# Static Network
+# NOTE: not work without iPXE boot option: auto=true priority=critical
+d-i preseed/early_command string kill-all-dhcp; netcfg
 
-    d-i netcfg/disable_autoconfig boolean true
-    d-i netcfg/disable_dhcp boolean true
+d-i netcfg/disable_autoconfig boolean true
+d-i netcfg/disable_dhcp boolean true
 
-    d-i netcfg/get_ipaddress string 10.20.30.3
-    d-i netcfg/get_netmask string 255.255.255.0
-    d-i netcfg/get_gateway string 10.20.30.254
-    d-i netcfg/get_hostname string ubuntu
+d-i netcfg/get_ipaddress string 10.20.30.3
+d-i netcfg/get_netmask string 255.255.255.0
+d-i netcfg/get_gateway string 10.20.30.254
+d-i netcfg/get_hostname string ubuntu
 
-    d-i netcfg/get_nameservers string 1.1.1.1 8.8.8.8
-    d-i netcfg/get_domain string example.com
+d-i netcfg/get_nameservers string 1.1.1.1 8.8.8.8
+d-i netcfg/get_domain string example.com
 
-    d-i netcfg/confirm_static boolean true
-    d-i netcfg/dhcp_options select Configure network manually
+d-i netcfg/confirm_static boolean true
+d-i netcfg/dhcp_options select Configure network manually
 
-    # DHCP Network
-    # d-i netcfg/get_hostname string ubuntu
-    # d-i netcfg/get_domain string ""
-    # d-i netcfg/hostname string ubuntu
-
-
-    #    __  __________  ___  ____  ___
-    #   /  |/  /  _/ _ \/ _ \/ __ \/ _ \
-    #  / /|_/ // // , _/ , _/ /_/ / , _/
-    # /_/  /_/___/_/|_/_/|_|\____/_/|_|
-    #
-    d-i live-installer/net-image string http://10.20.30.1/iso/ubuntu/install/filesystem.squashfs
-
-    # d-i debian-installer/allow_unauthenticated string true # Allow local source
-    d-i mirror/country string manual
-    d-i mirror/http/hostname string 10.20.30.1
-    d-i mirror/http/directory string /iso/ubuntu/
-    d-i mirror/http/proxy string
-    d-i mirror/http/mirror select 10.20.30.1
-
-    # NOTE: this would skip download repo metadata frome 'security.ubuntu.com'
-    d-i apt-setup/use_mirror boolean false
-    d-i apt-setup/security_host string 10.20.30.1
+# DHCP Network
+# d-i netcfg/get_hostname string ubuntu
+# d-i netcfg/get_domain string ""
+# d-i netcfg/hostname string ubuntu
 
 
-    #    ___  ___   ___  ________________________  _  __
-    #   / _ \/ _ | / _ \/_  __/  _/_  __/  _/ __ \/ |/ /
-    #  / ___/ __ |/ , _/ / / _/ /  / / _/ // /_/ /    /
-    # /_/  /_/ |_/_/|_| /_/ /___/ /_/ /___/\____/_/|_/
-    #
-    d-i partman-auto/disk string /dev/sda
-    d-i partman-auto/method string regular
-    d-i partman-auto/purge_lvm_from_device boolean true
-    d-i partman-lvm/device_remove_lvm boolean true
-    d-i partman-lvm/confirm boolean true
-    d-i partman-md/device_remove_md boolean true
-    d-i partman-auto/choose_recipe select atomic
+#    __  __________  ___  ____  ___
+#   /  |/  /  _/ _ \/ _ \/ __ \/ _ \
+#  / /|_/ // // , _/ , _/ /_/ / , _/
+# /_/  /_/___/_/|_/_/|_|\____/_/|_|
+#
+d-i live-installer/net-image string http://10.20.30.1/iso/ubuntu/install/filesystem.squashfs
 
-    # d-i partman-auto/expert_recipe string                         \
-    #       boot-root ::                                            \
-    #               1 1 2 free                                      \
-    #               $gptonly{ }                                     \
-    #               $primary{ }                                     \
-    #               $bios_boot{ }                                   \
-    #               method{ biosgrub }                              \
-    #               .                                               \
-    #               300 600 900 xfs                                 \
-    #                       $primary{ } $bootable{ }                \
-    #                       method{ format } format{ }              \
-    #                       use_filesystem{ } filesystem{ xfs }     \
-    #                       mountpoint{ /boot }                     \
-    #               .                                               \
-    #               6000 60000 -1 xfs                               \
-    #                       $primary{ }                             \
-    #                       method{ format } format{ }              \
-    #                       use_filesystem{ } filesystem{ xfs }     \
-    #                       mountpoint{ / }                         \
-    #               .                                               \
-    #               3027 4096 5120 linux-swap                       \
-    #                       $primary{ }                             \
-    #                       method{ swap } format{ }                \
-    #               .
+# d-i debian-installer/allow_unauthenticated string true # Allow local source
+d-i mirror/country string manual
+d-i mirror/http/hostname string 10.20.30.1
+d-i mirror/http/directory string /iso/ubuntu/
+d-i mirror/http/proxy string
+d-i mirror/http/mirror select 10.20.30.1
 
-    # d-i partman-basicfilesystems/no_swap boolean false
-
-    d-i partman-partitioning/confirm_write_new_label boolean true
-    d-i partman/choose_partition select finish
-    d-i partman/confirm boolean true
-    d-i partman/confirm_nooverwrite boolean true
+# NOTE: this would skip download repo metadata frome 'security.ubuntu.com'
+d-i apt-setup/use_mirror boolean false
+d-i apt-setup/security_host string 10.20.30.1
 
 
-    #    ___  ___  _______ _____  _________
-    #   / _ \/ _ |/ ___/ //_/ _ |/ ___/ __/
-    #  / ___/ __ / /__/ ,< / __ / (_ / _/
-    # /_/  /_/ |_\___/_/|_/_/ |_\___/___/
-    #
-    # python3-jinja2 python3-lxml python3-yaml python3-paramiko python3-pexpect python3-prettytable python3-netaddr (ipcalc)
+#    ___  ___   ___  ________________________  _  __
+#   / _ \/ _ | / _ \/_  __/  _/_  __/  _/ __ \/ |/ /
+#  / ___/ __ |/ , _/ / / _/ /  / / _/ // /_/ /    /
+# /_/  /_/ |_/_/|_| /_/ /___/ /_/ /___/\____/_/|_/
+#
+d-i partman-auto/disk string /dev/sda
+d-i partman-auto/method string regular
+d-i partman-auto/purge_lvm_from_device boolean true
+d-i partman-lvm/device_remove_lvm boolean true
+d-i partman-lvm/confirm boolean true
+d-i partman-md/device_remove_md boolean true
+d-i partman-auto/choose_recipe select atomic
 
-    # tasksel tasksel/first multiselect standard, server, openssh-server
-    # d-i pkgsel/include string bc tmux lsscsi smartmontools nmap ntpdate openipmi freeipmi-tools
+# d-i partman-auto/expert_recipe string                         \
+#       boot-root ::                                            \
+#               1 1 2 free                                      \
+#               $gptonly{ }                                     \
+#               $primary{ }                                     \
+#               $bios_boot{ }                                   \
+#               method{ biosgrub }                              \
+#               .                                               \
+#               300 600 900 xfs                                 \
+#                       $primary{ } $bootable{ }                \
+#                       method{ format } format{ }              \
+#                       use_filesystem{ } filesystem{ xfs }     \
+#                       mountpoint{ /boot }                     \
+#               .                                               \
+#               6000 60000 -1 xfs                               \
+#                       $primary{ }                             \
+#                       method{ format } format{ }              \
+#                       use_filesystem{ } filesystem{ xfs }     \
+#                       mountpoint{ / }                         \
+#               .                                               \
+#               3027 4096 5120 linux-swap                       \
+#                       $primary{ }                             \
+#                       method{ swap } format{ }                \
+#               .
 
-    tasksel tasksel/first multiselect standard, openssh-server
-    d-i pkgsel/exclude string nano screen plymouth
-    d-i pkgsel/include string bc tmux lsscsi smartmontools nmap ntpdate openipmi freeipmi-tools
-    # d-i pkgsel/include string bc vim tmux gawk nmap rename ethtool ifenslave vlan ntpdate openipmi freeipmi-tools
+# d-i partman-basicfilesystems/no_swap boolean false
 
-    # d-i pkgsel/language-packs multiselect en
-    d-i pkgsel/install-language-support boolean false
-
-    # NOTE: skip "updating the list of available packages"
-    d-i pkgsel/upgrade select none
-    d-i pkgsel/update-policy select none
-
-    # d-i pkgsel/upgrade select full-upgrade
-    # d-i pkgsel/update-policy select unattended-upgrades
-
-    postfix postfix/main_mailer_type select No configuration
-
-
-    #   __  _____________
-    #  / / / / __/ __/ _ \
-    # / /_/ /\ \/ _// , _/
-    # \____/___/___/_/|_|
-    #
-    # python -c 'import crypt,getpass;pw=getpass.getpass();print(crypt.crypt(pw) if (pw==getpass.getpass("Confirm: ")) else exit())'
-    d-i passwd/root-login boolean true
-    d-i passwd/root-password-crypted password ...
-
-    d-i passwd/username string worker
-    d-i passwd/user-fullname string worker
-    d-i passwd/user-password-crypted password ...
-    d-i passwd/user-default-groups string sudo
-
-    # d-i passwd/user-password password insecure
-    # d-i passwd/user-password-again password insecure
-    # d-i user-setup/allow-password-weak boolean true
-
-    d-i user-setup/encrypt-home boolean false
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
 
 
-    #   ________  __  _____
-    #  / ___/ _ \/ / / / _ )
-    # / (_ / , _/ /_/ / _  |
-    # \___/_/|_|\____/____/
-    #
-    d-i grub-installer/only_debian boolean true
-    d-i debian-installer/add-kernel-opts string net.ifnames=0 ipv6.disable=1 cgroup_enable=memory swapaccount=1
+#    ___  ___  _______ _____  _________
+#   / _ \/ _ |/ ___/ //_/ _ |/ ___/ __/
+#  / ___/ __ / /__/ ,< / __ / (_ / _/
+# /_/  /_/ |_\___/_/|_/_/ |_\___/___/
+#
+# python3-jinja2 python3-lxml python3-yaml python3-paramiko python3-pexpect python3-prettytable python3-netaddr (ipcalc)
 
-    # NOTE: remove 'quiet splash' from grub config
-    d-i debian-installer/quiet	boolean false
-    d-i debian-installer/splash	boolean false
+# tasksel tasksel/first multiselect standard, server, openssh-server
+# d-i pkgsel/include string bc tmux lsscsi smartmontools nmap ntpdate openipmi freeipmi-tools
+
+tasksel tasksel/first multiselect standard, openssh-server
+d-i pkgsel/exclude string nano screen plymouth
+d-i pkgsel/include string bc tmux lsscsi smartmontools nmap ntpdate openipmi freeipmi-tools
+# d-i pkgsel/include string bc vim tmux gawk nmap rename ethtool ifenslave vlan ntpdate openipmi freeipmi-tools
+
+# d-i pkgsel/language-packs multiselect en
+d-i pkgsel/install-language-support boolean false
+
+# NOTE: skip "updating the list of available packages"
+d-i pkgsel/upgrade select none
+d-i pkgsel/update-policy select none
+
+# d-i pkgsel/upgrade select full-upgrade
+# d-i pkgsel/update-policy select unattended-upgrades
+
+postfix postfix/main_mailer_type select No configuration
 
 
-    #    ___  ____  __________
-    #   / _ \/ __ \/ __/_  __/
-    #  / ___/ /_/ /\ \  / /
-    # /_/   \____/___/ /_/
-    #
-    d-i preseed/late_command string \
-    in-target sh -c 'mkdir -pv --mode=0700 /root/.ssh'; \
-    test -d /target/root/.ssh || { mkdir -pv /target/root/.ssh; chmod -v 700 /target/root/.ssh; } && ls -la /target/root|grep ssh; \
-    in-target sh -c 'echo -e "ssh-rsa AAAAB..." > /root/.ssh/authorized_keys && chmod -v 0600 /root/.ssh/authorized_keys'; \
-    in-target sed -i -e 's/^\(PasswordAuthentication\).*/\1 yes/g' -e 's/^\(PermitRootLogin\).*/\1 yes/g' /etc/ssh/sshd_config; \
-    in-target sed -i -e '/^GRUB_HIDDEN_TIMEOUT=/d' -e 's/^\(GRUB_HIDDEN_TIMEOUT_QUIET\)=true/\1=false/' /etc/default/grub; \
-    in-target update-grub
+#   __  _____________
+#  / / / / __/ __/ _ \
+# / /_/ /\ \/ _// , _/
+# \____/___/___/_/|_|
+#
+# python -c 'import crypt,getpass;pw=getpass.getpass();print(crypt.crypt(pw) if (pw==getpass.getpass("Confirm: ")) else exit())'
+d-i passwd/root-login boolean true
+d-i passwd/root-password-crypted password ...
 
-    d-i finish-install/reboot_in_progress
+d-i passwd/username string worker
+d-i passwd/user-fullname string worker
+d-i passwd/user-password-crypted password ...
+d-i passwd/user-default-groups string sudo
+
+# d-i passwd/user-password password insecure
+# d-i passwd/user-password-again password insecure
+# d-i user-setup/allow-password-weak boolean true
+
+d-i user-setup/encrypt-home boolean false
+
+
+#   ________  __  _____
+#  / ___/ _ \/ / / / _ )
+# / (_ / , _/ /_/ / _  |
+# \___/_/|_|\____/____/
+#
+d-i grub-installer/only_debian boolean true
+d-i debian-installer/add-kernel-opts string net.ifnames=0 ipv6.disable=1 cgroup_enable=memory swapaccount=1
+
+# NOTE: remove 'quiet splash' from grub config
+d-i debian-installer/quiet	boolean false
+d-i debian-installer/splash	boolean false
+
+
+#    ___  ____  __________
+#   / _ \/ __ \/ __/_  __/
+#  / ___/ /_/ /\ \  / /
+# /_/   \____/___/ /_/
+#
+d-i preseed/late_command string \
+in-target sh -c 'mkdir -pv --mode=0700 /root/.ssh'; \
+test -d /target/root/.ssh || { mkdir -pv /target/root/.ssh; chmod -v 700 /target/root/.ssh; } && ls -la /target/root|grep ssh; \
+in-target sh -c 'echo -e "ssh-rsa AAAAB..." > /root/.ssh/authorized_keys && chmod -v 0600 /root/.ssh/authorized_keys'; \
+in-target sed -i -e 's/^\(PasswordAuthentication\).*/\1 yes/g' -e 's/^\(PermitRootLogin\).*/\1 yes/g' /etc/ssh/sshd_config; \
+in-target sed -i -e '/^GRUB_HIDDEN_TIMEOUT=/d' -e 's/^\(GRUB_HIDDEN_TIMEOUT_QUIET\)=true/\1=false/' /etc/default/grub; \
+in-target update-grub
+
+d-i finish-install/reboot_in_progress
+```
+
 
 <br/>
 
