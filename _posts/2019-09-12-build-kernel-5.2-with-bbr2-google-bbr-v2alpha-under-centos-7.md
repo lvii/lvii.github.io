@@ -90,6 +90,38 @@ google 发布了 BBR2 测试版：<https://github.com/google/bbr/tree/v2alpha>
     # grep -i bbr2 .config
     CONFIG_TCP_CONG_BBR2=m
 
+禁用签名和调试：
+
+    scripts/config --disable MODULE_SIG
+    scripts/config --disable DEBUG_INFO
+
+如果使用 ***原生内核***，需要 **置空** 内核配置文件中的 `CONFIG_SYSTEM_TRUSTED_KEYS` 选项：
+
+    sed -i.bak 's@\(CONFIG_SYSTEM_TRUSTED_KEYS=\).*@\1""@' .config
+
+    # grep -i CONFIG_SYSTEM_TRUSTED_KEYS .config
+    CONFIG_SYSTEM_TRUSTED_KEYS=""
+
+不然编译会报错：
+
+    make[3]: *** No rule to make target 'certs/rhel.pem', needed by 'certs/x509_certificate_list'. Stop.
+
+对比一下上面几处修改项对应配置：
+
+    # diff .config ~/0.config
+    811c811
+    < # CONFIG_MODULE_SIG is not set
+    ---
+    > CONFIG_MODULE_SIG=y
+    7454c7454
+    < CONFIG_SYSTEM_TRUSTED_KEYS=""
+    ---
+    > CONFIG_SYSTEM_TRUSTED_KEYS="certs/rhel.pem"
+    7589c7589
+    < # CONFIG_DEBUG_INFO is not set
+    ---
+    > CONFIG_DEBUG_INFO=y
+
 编译内核并打包为 rpm ：
 
 ```
@@ -143,11 +175,6 @@ sys     15m24.401s
 
 修改 grub 默认启动的内核：
 
-    # awk -F\' '$1=="menuentry " {print i++ " : " $2}' /etc/grub2.cfg
-    0 : CentOS Linux (5.2.0-rc3+) 7 (Core)
-    1 : CentOS Linux (5.2.8-1.el7.elrepo.x86_64) 7 (Core)
-    2 : CentOS Linux (0-rescue-05cb8c7b39fe0f70e3ce97e5beab809d) 7 (Core)
-
     # grub2-editenv list
     saved_entry=CentOS Linux (5.2.8-1.el7.elrepo.x86_64) 7 (Core)
 
@@ -155,6 +182,11 @@ sys     15m24.401s
 
     # grub2-editenv list
     saved_entry=0
+
+    # grubby --info=ALL|awk -F= '$1=="kernel" {print i++ " : " $2}'
+    0 : /boot/vmlinuz-5.2.0-rc3+
+    1 : /boot/vmlinuz-5.2.8-1.el7.elrepo.x86_64
+    2 : /boot/vmlinuz-0-rescue-05cb8c7b39fe0f70e3ce97e5beab809d
 
 修改 `/etc/sysctl.conf` 配置：
 
