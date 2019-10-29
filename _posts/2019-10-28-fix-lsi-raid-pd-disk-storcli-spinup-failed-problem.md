@@ -161,8 +161,9 @@ Spin 状态复位后，停止擦除即可：
 # reference
 
 - [storcli](https://datahunter.org/storcli)
-- [How do I replace a failed drive with LSI 9280 cards?](https://www.45drives.com/wiki/index.php?title=How_do_I_replace_a_failed_drive_with_LSI_9280_cards%3F)
 - [LSI storcli64 examples](https://support.dvsus.com/hc/en-us/articles/115000636106-LSI-storcli64-examples)
+- [How do I replace a failed drive with LSI 9280 cards?](https://www.45drives.com/wiki/index.php?title=How_do_I_replace_a_failed_drive_with_LSI_9280_cards%3F)
+- [How do I remove a failing disk from a LSI MegaRAID disk group?](https://serverfault.com/questions/954302/how-do-i-remove-a-failing-disk-from-a-lsi-megaraid-disk-group)
 
 <br/>
 
