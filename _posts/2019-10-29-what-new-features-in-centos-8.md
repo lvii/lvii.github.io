@@ -138,7 +138,7 @@ RHEL 8.1 beta 也出了一段时间，这次大版本的更新变化的地方还
 
 ## python
 
-[Chapter 6. Using Python in Red Hat Enterprise Linux 8](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_basic_system_settings/using-python3_configuring-basic-system-setting)s
+[Chapter 6. Using Python in Red Hat Enterprise Linux 8](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_basic_system_settings/using-python3_configuring-basic-system-setting)
 
 `yum` 和 `dnf` 等系统工具对 python 的依赖跟 python 软件包解绑，搞了个 `platform-python` 马甲：
 
