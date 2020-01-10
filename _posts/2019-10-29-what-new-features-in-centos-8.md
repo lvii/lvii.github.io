@@ -130,11 +130,63 @@ RHEL 8.1 beta 也出了一段时间，这次大版本的更新变化的地方还
 
 ## kernel
 
-内核的一些可玩项：
+内核的一些新特性：
 
-    OverlayFS2
-    TCP BBR
-    ePBF/XDP
+- CGroups V2
+- Overlay FS2
+- TCP BBR
+- ePBF / XDP
+
+### ePBF / XDP
+
+[Cilium 1.6: KVstore-free operation, 100% kube-proxy replacement, Socket-based load-balancing, ... 2019-08-20](https://cilium.io/blog/2019/08/20/cilium-16/)
+
+[Kubernetes NodePort (beta)](https://docs.cilium.io/en/latest/gettingstarted/nodeport/)
+
+> Cilium to enable Kubernetes **NodePort** services in BPF which can replace NodePort implemented by `kube-proxy`.
+> Enabling the feature allows to run a fully functioning Kubernetes cluster **without** `kube-proxy`.
+> NodePort services depend on the [Host-Reachable Services (beta)](https://docs.cilium.io/en/latest/gettingstarted/host-services/#host-services) feature, therefore a **v4.19.57**, v5.1.16, v5.2.0 or more recent Linux kernel is required.
+
+CentOS 8 系的内核版本 `4.18.0` 有点旧，不知未来 redhat 是否会 backport 新内核特性：
+
+    # rpm -q --queryformat="%{VERSION}\n" kernel
+    4.18.0
+
+### CGroups V2
+
+[World domination with cgroups in RHEL 8: welcome cgroups v2! ](https://www.redhat.com/en/blog/world-domination-cgroups-rhel-8-welcome-cgroups-v2)
+
+[Migrating from CGroups V1 in Red Hat Enterprise Linux 7 and below to CGroups V2 in Red Hat Enterprise Linux 8](https://access.redhat.com/articles/3735611)
+
+![img](https://access.redhat.com/sites/default/files/images/cgroupsv1.png)
+
+> Above, the `bg` cgroup is associated with the `blkio` and memory cgroups in V1 but is a **duplicated** entry in the hierarchy since the `bg` cgroup is associated with multiple controllers.
+> In V2, the `bg` cgroup exists once and has the `memory` and `io` controllers associated with it as described by `cgroup.subtree_control`.
+
+内核引导增加 `systemd.unified_cgroup_hierarchy=1` 参数即可启用 CGroups V2 ：
+
+    grubby --update-kernel=ALL --args="systemd.unified_cgroup_hierarchy=1"
+
+    systemctl set-property user.slice CPUQuota=50%
+
+## podman (docker/moby)
+
+Redhat 造的替换 docker 的轮子 `podman` ：
+
+- CGroups V2
+- **非特权** 普通用户
+
+[RHEL8 Building, running, and managing containers](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/building_running_and_managing_containers/)
+
+[Containers without daemons: Podman and Buildah available in RHEL 7.6 and RHEL 8](https://developers.redhat.com/blog/2018/11/20/buildah-podman-containers-without-daemons/)
+
+[Fedora 31: Docker package no longer available and will not run by default (due to switch to cgroups v2)](https://fedoraproject.org/wiki/Common_F31_bugs#docker-moby-engine)
+
+> The Docker package has been **removed** from Fedora 31. It has been replaced by the upstream package `moby-engine`, which includes the **Docker CLI** as well as the **Docker Engine**. However, we recommend instead that you use `podman`, which is a **Cgroups v2-compatible** container engine whose CLI is compatible with Docker's. **Fedora 31 uses Cgroups v2 by default**. The `moby-engine` package does **NOT** support Cgroups v2 yet, so if you need to run the `moby-engine` or run the **Docker CE** package, then you need to switch the system to using Cgroups v1, by passing the kernel parameter `systemd.unified_cgroup_hierarchy=0`
+
+<https://success.docker.com/article/compatibility-matrix>
+
+Docker EE 支持 CentOS 8
 
 ## python
 
@@ -173,7 +225,6 @@ RHEL 8.1 beta 也出了一段时间，这次大版本的更新变化的地方还
     # rpm -q platform-python python36
     platform-python-3.6.8-4.el8_0.x86_64
     python36-3.6.8-2.module_el8.0.0+33+0a10c0e1.x86_64
-
 
 <br/>
 

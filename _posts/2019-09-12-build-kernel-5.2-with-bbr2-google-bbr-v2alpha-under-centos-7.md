@@ -218,7 +218,7 @@ sys     15m24.401s
 
 [RFC 8257: ECN ACKing design in DCTCP](https://tools.ietf.org/html/rfc8257#section-3.2)
 
-https://www.bufferbloat.net/projects/ecn-sane/wiki/jmorton_ecn_position/
+<https://www.bufferbloat.net/projects/ecn-sane/wiki/jmorton_ecn_position/>
 
 > ECN is essential for modern congestion control. Without it, there is no way to separate ***random loss*** and ***re-ordering*** from congestion signals, and signalling congestion incurs application latency penalties due to HoL blocking in TCP while the lost packets are retransmitted. With ECN, congestion can be signalled unambiguously as congestion, and without incurring retransmits; network engineers who rely on packet loss as a primary metric should also be pleased by its deployment.
 
