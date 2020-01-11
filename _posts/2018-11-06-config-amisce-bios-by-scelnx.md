@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "使用 AMI SCELNX 工具配置 BIOS"
-category: system
-tags: [bios]
+category: hardware
+tags: [BIOS]
 ---
 
 # WHY

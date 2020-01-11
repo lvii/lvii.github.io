@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "将 megaraid 卡磁盘 raid0 改为 JBOD 模式"
-category: system
-tags: [raid]
+title: "使用 megacli 将 LSI RAID 磁盘由 RAID0 改为 JBOD 模式"
+category: hardware
+tags: [RAID]
 ---
 
 ## 起因

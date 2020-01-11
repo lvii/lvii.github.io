@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "浪潮服务器 BMC 用户配置问题导致 ipmipower 出现 username invalid 报错"
-category: system
+category: hardware
 tags: [freeipmi, ipmitool]
 ---
 

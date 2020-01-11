@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "LSI RAID 硬盘修复 storcli spinup failed 问题"
-category: system
+title: "使用 storcli 修复 LSI RAID 硬盘 spinup failed 问题"
+category: hardware
 tags: [RAID]
 ---
 

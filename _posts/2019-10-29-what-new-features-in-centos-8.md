@@ -147,7 +147,9 @@ RHEL 8.1 beta 也出了一段时间，这次大版本的更新变化的地方还
 > Enabling the feature allows to run a fully functioning Kubernetes cluster **without** `kube-proxy`.
 > NodePort services depend on the [Host-Reachable Services (beta)](https://docs.cilium.io/en/latest/gettingstarted/host-services/#host-services) feature, therefore a **v4.19.57**, v5.1.16, v5.2.0 or more recent Linux kernel is required.
 
-CentOS 8 系的内核版本 `4.18.0` 有点旧，不知未来 redhat 是否会 backport 新内核特性：
+[Making the Kubernetes Service Abstraction Scale using BPF](https://linuxplumbersconf.org/event/4/contributions/458/attachments/277/464/Making_the_Kubernetes_Service_Abstraction_Scale_using_BPF.pdf)
+
+CentOS 8 系的内核版本 `4.18.0` 有点旧，不知未来 Cilium 的 NodePort 特性会不会支持 RHEL8 ：
 
     # rpm -q --queryformat="%{VERSION}\n" kernel
     4.18.0

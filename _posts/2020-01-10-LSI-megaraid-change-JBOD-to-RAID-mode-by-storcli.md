@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "使用 storcli 将硬盘从 JBOD 模式改为 RAID 模式"
-category: system
+title: "使用 storcli 将 LSI RAID 硬盘从 JBOD 模式改为 RAID 模式"
+category: hardware
 tags: [RAID]
 ---
 
