@@ -7,9 +7,17 @@ tags: [RAID]
 
 # WHAT
 
-给一台服务器增加 SSD 后，发现新加的 2 块 SSD 硬盘直接被系统识别了
+<https://en.wikipedia.org/wiki/Non-RAID_drive_architectures>
 
-我都还没来的及配置 RAID 竟然被识别，一看发现新加的 SSD 是 `JBOD` 模式：
+> JBOD (abbreviated from "**Joint Batch Of Disks**" or colloquially "**just a bunch of disks/drives**") is an architecture using multiple hard drives exposed as individual devices. Hard drives may be treated **independently** or may be combined into one or more logical volumes using a volume manager like **LVM** or **mdadm**; such volumes are usually called "**spanned**" or "**linear \| SPAN \| BIG**".
+>
+> What makes a SPAN or BIG different from RAID configurations is the possibility for the selection of drives. While RAID usually requires all drives to **be of similar capacity** and it is preferred that the same or similar drive models are used for performance reasons, **a spanned volume does not have such requirements**.
+
+多块盘组合的 JBOD 模式，类似 LVM 顺序拼接。RAID 对磁盘大小有限制，会选择 **容量最小（木桶原理）** 的硬盘进行总容量的计算，大盘多余的容量将被忽略。不同容量的盘做 RAID5 就是这样处理的。
+
+给一台服务器增加 SSD 后，发现新加的 2 块 SSD 硬盘直接被系统识别了。
+
+我都还没来的及配置 RAID 竟然被识别，一看发现新加的 SSD 是 `JBOD` 状态：
 
     # storcli /c0/e252/s6 show
     Controller = 0
@@ -27,17 +35,12 @@ tags: [RAID]
 
 # HOW
 
-找了一圈文档也没找到明确的切换 JBOD 和 RAID 模式的命令
+文档也没找到明确的 **切换** JBOD 和 RAID 模式的命令，只有设置硬盘 **状态** 的命令：
 
-只好徒手测试 `help` 中可能的调整命令：
-
-    storcli /cx[/ex]/sx set online
-    storcli /cx[/ex]/sx set offline
-    storcli /cx[/ex]/sx set missing
-    storcli /cx[/ex]/sx set jbod
-    storcli /cx[/ex]/sx set good [force]
-
-**排除法** 应该 `set good` 可能性大点，就测试了一下，发现还真是它
+command | operation
+------- | ---------
+`storcli /cx[/ex]/sx set jbod` | This command sets the *drive state* to **JBOD**.
+`storcli /cx[/ex]/sx set good [force]` | This drive changes the *drive state* to **Unconfigured Good**.
 
 将物理盘设置 `set good` 一下：
 
@@ -78,17 +81,33 @@ tags: [RAID]
     252:6    17 UGood  1 893.137 GB SATA SSD N   N  512B INTEL SSDSC2KB960G7 U
     ----------------------------------------------------------------------------
 
-看来 JBOD 模式是 **单块** 硬盘的状态，而不是 RAID 卡级别的 **全局** 设置
+**单块** 硬盘的 `JBOD` 状态来区分 RAID 模式，而且 RAID 和 JBOD 是可以 **同时混用** 的。
 
-而且 RAID 和 JBOD 是可以 **同时混用** 的
+RAID 卡设置里有是否启用 **JBOD 模式** 的 **全局** 开关：
 
-<https://en.wikipedia.org/wiki/Non-RAID_drive_architectures>
+    # storcli /c0 help|grep jbod=
+    storcli /cx set jbod=<on|off> [force]
 
-> JBOD (abbreviated from "**Joint Batch Of Disks**" or colloquially "**just a bunch of disks/drives**") is an architecture using multiple hard drives exposed as individual devices. Hard drives may be treated **independently** or may be combined into one or more logical volumes using a volume manager like **LVM** or **mdadm**; such volumes are usually called "**spanned**" or "**linear \| SPAN \| BIG**".
->
-> What makes a SPAN or BIG different from RAID configurations is the possibility for the selection of drives. While RAID usually requires all drives to **be of similar capacity** and it is preferred that the same or similar drive models are used for performance reasons, **a spanned volume does not have such requirements**.
+    # storcli /c0 show all|grep jbod
+    Support JBOD = Yes
+    Support SecurityonJBOD = Yes
+    Support JBOD Write cache = No
+    Enable JBOD = No                    <-- 全局开关状态
 
-多块盘组合的 JBOD 模式，类似 LVM 顺序拼接。RAID 对磁盘大小有限制，会选择 **容量最小（木桶原理）** 的硬盘进行总容量的计算，大盘多余的容量将被忽略。不同容量的盘做 RAID5 就是这样处理的。
+    # storcli /c0 show jbod
+    Controller = 0
+    Status = Success
+    Description = None
+
+    Controller Properties :
+    =====================
+
+    ----------------
+    Ctrl_Prop Value
+    ----------------
+    JBOD      OFF
+    ----------------
+
 
 <br/>
 
