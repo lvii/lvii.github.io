@@ -24,11 +24,13 @@ if any(x != '' for x in d.itervalues()):
 
 **注意：** python 3 已经移除 `itervalues()` 方法：<https://www.python.org/dev/peps/pep-0469/>
 
+python3 字典的 `d.key()`、`d.values()`、`d.items()` 方法返回的是 **迭代器** 对象，而不再是 **列表**
+
 python2 | python3
 :------ | :------
-`d.iterkeys()` | `iter(d.keys())`
-`d.itervalues()` | `iter(d.values())`
-`d.iteritems()` | `iter(d.items())`
+`d.iterkeys()` | `d.keys()`
+`d.itervalues()` | `d.values()`
+`d.iteritems()` | `d.items()`
 
 示例代码：
 
