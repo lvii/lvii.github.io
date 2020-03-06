@@ -1,13 +1,13 @@
 ---
 layout: post
-title: "CentOS 7 下编译内核，测试 google TCP BBR v2 Alpha"
+title: "CentOS 7 下编译内核测试 Google TCP BBR v2 Alpha 模块"
 category: system
 tags: [kernel]
 ---
 
-# WHY
+# WHAT
 
-google 发布了 BBR2 测试版：<https://github.com/google/bbr/tree/v2alpha>
+Google 发布了 BBR2 测试版：<https://github.com/google/bbr/tree/v2alpha>
 
 就在 CentOS 7 下编译打包新的 kernel 测试一下新的 BBR2 内核模块
 
@@ -76,7 +76,7 @@ google 发布了 BBR2 测试版：<https://github.com/google/bbr/tree/v2alpha>
 使用 `make menuconfig` 配置 BBR2 内核模块：
 
 - 按 `/` 键在搜索框输入 `bbr2` **回车**
-- 根据查询结果，按 **数字键** `2` 进入 `TCP_CONG_BBR2` 配置页面
+- 根据查询结果，按 **数字键** `2` 跳转到 `TCP_CONG_BBR2` 配置页面
 - 按 **空格键** 启用 bbr2 内核模块
 
 ![img_kernel_make_menuconfig_search](https://i.imgur.com/JZeUU3i.png)
@@ -95,7 +95,7 @@ google 发布了 BBR2 测试版：<https://github.com/google/bbr/tree/v2alpha>
     scripts/config --disable MODULE_SIG
     scripts/config --disable DEBUG_INFO
 
-如果使用 ***原生内核***，需要 **置空** 内核配置文件中的 `CONFIG_SYSTEM_TRUSTED_KEYS` 选项：
+如果在 **原生内核** 下编译需要 **置空** `CONFIG_SYSTEM_TRUSTED_KEYS` 配置选项：
 
     sed -i.bak 's@\(CONFIG_SYSTEM_TRUSTED_KEYS=\).*@\1""@' .config
 
@@ -106,17 +106,19 @@ google 发布了 BBR2 测试版：<https://github.com/google/bbr/tree/v2alpha>
 
     make[3]: *** No rule to make target 'certs/rhel.pem', needed by 'certs/x509_certificate_list'. Stop.
 
-对比一下上面几处修改项对应配置：
+对比一下上面几处修改所对应的配置选项差异：
 
     # diff .config ~/0.config
     811c811
     < # CONFIG_MODULE_SIG is not set
     ---
     > CONFIG_MODULE_SIG=y
+
     7454c7454
     < CONFIG_SYSTEM_TRUSTED_KEYS=""
     ---
     > CONFIG_SYSTEM_TRUSTED_KEYS="certs/rhel.pem"
+
     7589c7589
     < # CONFIG_DEBUG_INFO is not set
     ---
@@ -190,11 +192,15 @@ sys     15m24.401s
 
 修改 `/etc/sysctl.conf` 配置：
 
-    # BBRv2
-    net.ipv4.tcp_ecn=1
-    net.ipv4.tcp_congestion_control=bbr2
+    net.core.default_qdisc = fq
 
-**ECN** 是 BBRv2 新引入的 TCP 标记，用来区分 **随机丢包** 或 **重新排序** 的拥塞信号
+    # BBRv2
+    net.ipv4.tcp_ecn = 1
+    net.ipv4.tcp_congestion_control = bbr2
+
+**[ECN 显式拥塞通知](https://zh.wikipedia.org/zh-cn/显式拥塞通知)** 是 BBRv2 新引入的标记，判断 **丢包** 还是 **重传** 导致的拥塞
+
+> 标准的 TCP 拥塞控制算法只能检测拥塞的 **存在**，而使用 ECN 的 **DCTCP** 可以测量拥塞的 **程度**。
 
 重启确认 BBRv2 是否启用：
 

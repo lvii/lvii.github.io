@@ -22,15 +22,27 @@ if any(x != '' for x in d.itervalues()):
 
 `itervalues()` 方法直接遍历字典，无需像 `values()` 方法再额外生成列表
 
-**注意：** python 3 已经移除 `itervalues()` 方法：<https://www.python.org/dev/peps/pep-0469/>
+**注意：** python 3 已经移除 `itervalues()` 方法
 
-python3 字典的 `d.key()`、`d.values()`、`d.items()` 方法返回的是 **迭代器** 对象，而不再是 **列表**
+python3 字典的 `d.key()`、`d.values()`、`d.items()` 方法返回的是 **[视图对象](https://docs.python.org/zh-cn/3/library/stdtypes.html#dict-views)** 而不再是 **列表**：
+
+<https://docs.python.org/zh-cn/3/library/stdtypes.html#dict-views>
+
+> 由 `dict.keys()`, `dict.values()` 和 `dict.items()` 所返回的对象是 **视图对象**。该对象提供字典条目的一个动态视图，这意味着 **当字典改变时，视图也会相应改变**。
+
+<https://www.python.org/dev/peps/pep-0469/>
+
+> - Lists as mutable snapshots: `d.items()` -> `list(d.items())` 遍历字典时 **删除** 操作
+> - Iterator objects: `d.iteritems()` -> `iter(d.items())`
+> - Set based dynamic **views**: `d.viewitems()` -> `d.items()`
+
+python3 需要使用 `iter()` 方法将 **视图对象** 转换为 **迭代器** ：
 
 python2 | python3
 :------ | :------
-`d.iterkeys()` | `d.keys()`
-`d.itervalues()` | `d.values()`
-`d.iteritems()` | `d.items()`
+`d.iterkeys()` | `iter(d.keys())`
+`d.itervalues()` | `iter(d.values())`
+`d.iteritems()` | `iter(d.items())`
 
 示例代码：
 
@@ -53,6 +65,9 @@ with open(UPLOAD_CSV,'rb') as csv_file_input:
 [How to ignore blank rows in a csv file](https://stackoverflow.com/questions/8422250/how-to-ignore-blank-rows-in-a-csv-file)
 
 [What is the difference between dict.items() and dict.iteritems() ?](https://stackoverflow.com/questions/10458437/what-is-the-difference-between-dict-items-and-dict-iteritems)
+
+[What are dictionary view objects ?](https://stackoverflow.com/questions/8957750/what-are-dictionary-view-objects)
+
 
 <br/>
 
