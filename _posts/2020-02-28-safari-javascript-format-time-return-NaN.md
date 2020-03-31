@@ -44,3 +44,9 @@ const expireSeconds = new Date(expireTimeString.replace(/\s/, 'T')+'Z').getTime(
 [Safari Javascript Date() NaN Issue (yyyy-MM-dd HH:mm:ss) 2014-02-19](https://stackoverflow.com/questions/21883699/safari-javascript-date-nan-issue-yyyy-mm-dd-hhmmss)
 
 <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date>
+
+<br/>
+
+本文标题 | [{{ page.title }}]({{ page.url }})
+-------- |:--------
+原始链接 | <{{ site.url }}{{ page.url }}>

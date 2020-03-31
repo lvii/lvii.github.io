@@ -28,4 +28,8 @@ tags: [ansible]
 
 <https://docs.ansible.com/ansible/latest/user_guide/become.html>
 
+<br/>
 
+本文标题 | [{{ page.title }}]({{ page.url }})
+-------- |:--------
+原始链接 | <{{ site.url }}{{ page.url }}>
