@@ -158,6 +158,181 @@ Spin 状态复位后，停止擦除即可：
     Status = Success
     Description = Add VD Succeeded
 
+# CASE 2
+
+更换故障盘无法创建 VD ：
+
+    # storcli /c0 add vd r0 drives=9:7
+    Controller = 0
+    Status = Failure
+    Description = physical disk does not have appropriate attributes
+
+没有 Foreign 盘：
+
+    # storcli /c0/fall show
+    Controller = 0
+    Status = Success
+    Description = Couldn't find any foreign Configuration
+
+重新 **上下线** 硬盘还是不行：
+
+    # storcli /c0/e9/s7 spindown
+    Controller = 0
+    Status = Success
+    Description = Spin Down Drive Succeeded.
+
+    # storcli /c0/e9/s7 show
+    Controller = 0
+    Status = Success
+    Description = Show Drive Information Succeeded.
+
+    Drive Information :
+    =================
+
+    --------------------------------------------------------------------------
+    EID:Slt DID State DG     Size Intf Med SED PI SeSz Model               Sp
+    --------------------------------------------------------------------------
+    9:7      14 UGood -  7.276 TB SATA HDD N   N  512B ST8000NC0002-1XX112 D    <--
+    --------------------------------------------------------------------------
+
+    # storcli /c0/e9/s7 spinup
+    Controller = 0
+    Status = Success
+    Description = Spin Up Drive Succeeded.
+
+    # storcli /c0 add vd r0 drives=9:7
+    Controller = 0
+    Status = Failure
+    Description = physical disk does not have appropriate attributes
+
+下线 PD 使用 `earse` 清除，重新 **初始化** 一下：
+
+    # storcli /c0/e9/s7 spindown
+    Controller = 0
+    Status = Success
+    Description = Spin Down Drive Succeeded.
+
+    # storcli /c0/e9/s7 show
+    Controller = 0
+    Status = Success
+    Description = Show Drive Information Succeeded.
+
+    Drive Information :
+    =================
+
+    --------------------------------------------------------------------------
+    EID:Slt DID State DG     Size Intf Med SED PI SeSz Model               Sp
+    --------------------------------------------------------------------------
+    9:7      14 UGood -  7.276 TB SATA HDD N   N  512B ST8000NC0002-1XX112 D    <--
+    --------------------------------------------------------------------------
+
+    # storcli /c0/e9/s7 start erase simple
+    Controller = 0
+    Status = Success
+    Description = Start Drive Erase Succeeded.
+
+    # storcli /c0/e9/s7 show erase
+    Controller = 0
+    Status = Success
+    Description = Show Drive Erase Status Succeeded.
+
+    ----------------------------------------------------
+    Drive-ID  Progress% Status      Estimated Time Left
+    ----------------------------------------------------
+    /c0/e9/s7         0 In progress 0 Seconds
+    ----------------------------------------------------
+
+PD 的 `Spin` 状态变为 `T` ：
+
+    # storcli /c0/e9/s7 show
+    Controller = 0
+    Status = Success
+    Description = Show Drive Information Succeeded.
+
+    Drive Information :
+    =================
+
+    --------------------------------------------------------------------------
+    EID:Slt DID State DG     Size Intf Med SED PI SeSz Model               Sp
+    --------------------------------------------------------------------------
+    9:7      14 UGood -  7.276 TB SATA HDD N   N  512B ST8000NC0002-1XX112 T    <--
+    --------------------------------------------------------------------------
+
+过一会儿 Spin 状态变为 `U` 状态：
+
+    # storcli /c0/e9/s7 show
+    Controller = 0
+    Status = Success
+    Description = Show Drive Information Succeeded.
+
+    Drive Information :
+    =================
+
+    --------------------------------------------------------------------------
+    EID:Slt DID State DG     Size Intf Med SED PI SeSz Model               Sp
+    --------------------------------------------------------------------------
+    9:7      14 UGood -  7.276 TB SATA HDD N   N  512B ST8000NC0002-1XX112 U
+    --------------------------------------------------------------------------
+
+    # storcli /c0/e9/s7 show erase
+    Controller = 0
+    Status = Success
+    Description = Show Drive Erase Status Succeeded.
+
+    ----------------------------------------------------
+    Drive-ID  Progress% Status      Estimated Time Left
+    ----------------------------------------------------
+    /c0/e9/s7         0 In progress 0 Seconds
+    ----------------------------------------------------
+
+停掉 `erase` 擦除任务：
+
+    # storcli /c0/e9/s7 stop erase
+    Controller = 0
+    Status = Success
+    Description = Stop Drive Erase Succeeded.
+
+    # storcli /c0/e9/s7 show erase
+    Controller = 0
+    Status = Success
+    Description = Show Drive Erase Status Succeeded.
+
+    --------------------------------------------------------
+    Drive-ID  Progress% Status          Estimated Time Left
+    --------------------------------------------------------
+    /c0/e9/s7 -         Not in progress -
+    --------------------------------------------------------
+
+    # storcli /c0/e9/s7 show
+    Controller = 0
+    Status = Success
+    Description = Show Drive Information Succeeded.
+
+    Drive Information :
+    =================
+
+    --------------------------------------------------------------------------
+    EID:Slt DID State DG     Size Intf Med SED PI SeSz Model               Sp
+    --------------------------------------------------------------------------
+    9:7      14 UGood -  7.276 TB SATA HDD N   N  512B ST8000NC0002-1XX112 U
+    --------------------------------------------------------------------------
+
+成功重新创建 VD ：
+
+    # storcli /c0 add vd r0 drives=9:7
+    Controller = 0
+    Status = Success
+    Description = Add VD Succeeded
+
+对比清除前后 PD 的详情配置，发现 `Sequence Number` 字段不一样：
+
+    $ diff -y pd-failed pd-online|egrep ' [|<>]'
+    9:7      14 UGood -  7.276 TB SATA HDD N   N  512B ST8000NC00 | 9:7      14 Onln  12 7.276 TB SATA HDD N   N  512B ST8000NC00
+    Drive Temperature =  25C (77.00 F)                            | Drive Temperature =  32C (89.60 F)
+                                                                  > Drive position = DriveGroup:12, Span:0, Row:0
+    Sequence Number = 5                                           | Sequence Number = 10
+                      ^                                                               ^^
+
 # reference
 
 - [storcli](https://datahunter.org/storcli)

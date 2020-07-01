@@ -30,12 +30,11 @@ tags: [ubuntu]
 `interface=auto` | 跳过手动选择引导网卡界面
 `auto=true priority=critical url=...` | 根据 `url=` 指定的 preseed 配置自动安装系统
 `DEBCONF_DEBUG=5` | 控制台 console `Alt + F4` 输出更详细日志
-`--- net.ifnames=0 ipv6.disable=1` | `---` 之后的参数，装机完成后保留（**实测无效**）
+`--- net.ifnames=0 ipv6.disable=1` | `---` 之后的参数，保留追加到 grub 引导参数
 
 ## preseed
 
 preseed 文件要实现真正自动化，需要不少 hack 和 CentOS 的 kickstart 相比，语法和文档差太多。。。
-
 
 ### network
 
@@ -55,9 +54,10 @@ preseed 文件要实现真正自动化，需要不少 hack 和 CentOS 的 kickst
 
 ![img_ubuntu_preseed_download_security_repo_timeout](https://i.imgur.com/uZC8iEC.png)
 
-将 security 源也指向 ISO 对应的源：
+置空 security 源：
 
-    d-i apt-setup/security_host string 10.20.30.1
+    d-i apt-setup/security_host string
+    d-i apt-setup/security_path string
 
 ### postfix
 
@@ -71,10 +71,9 @@ preseed 文件要实现真正自动化，需要不少 hack 和 CentOS 的 kickst
 
 ### late_command
 
-`late_command` 里面如果有 `echo ... > redirect_file` **重定向** 操作，直接在 `in-target` 里用无效
+`late_command` 命令如果包含 `echo ... > redirect_file` **重定向** 操作，直接在 `in-target` 使用无效
 
 需要用 `sh -c 'command'` 包装一下：
-
 
     d-i preseed/late_command string \
     in-target sh -c 'mkdir -pv --mode=0700 /root/.ssh'; \
@@ -82,6 +81,8 @@ preseed 文件要实现真正自动化，需要不少 hack 和 CentOS 的 kickst
     in-target sh -c 'echo -e "ssh-rsa AAAAB..." > /root/.ssh/authorized_keys && chmod -v 0600 /root/.ssh/authorized_keys'; \
 
 再就是难用的分区配置。。。
+
+系统安装完后，相关日志保存在 `/var/log/installer` 目录
 
 ### example preseed config
 
@@ -149,7 +150,7 @@ d-i mirror/http/mirror select 10.20.30.1
 
 # NOTE: this would skip download repo metadata frome 'security.ubuntu.com'
 d-i apt-setup/use_mirror boolean false
-d-i apt-setup/security_host string 10.20.30.1
+d-i apt-setup/security_host string
 
 
 #    ___  ___   ___  ________________________  _  __
@@ -163,23 +164,23 @@ d-i partman-auto/purge_lvm_from_device boolean true
 d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-lvm/confirm boolean true
 d-i partman-md/device_remove_md boolean true
-d-i partman-auto/choose_recipe select atomic
+d-i partman-auto/choose_recipe select part-layout
 
 # d-i partman-auto/expert_recipe string                         \
-#       boot-root ::                                            \
+#       part-layout ::                                          \
 #               1 1 2 free                                      \
 #               $gptonly{ }                                     \
 #               $primary{ }                                     \
 #               $bios_boot{ }                                   \
 #               method{ biosgrub }                              \
 #               .                                               \
-#               300 600 900 xfs                                 \
+#               200 300 600 xfs                                 \
 #                       $primary{ } $bootable{ }                \
 #                       method{ format } format{ }              \
 #                       use_filesystem{ } filesystem{ xfs }     \
 #                       mountpoint{ /boot }                     \
 #               .                                               \
-#               6000 60000 -1 xfs                               \
+#               1 1 -1 xfs                                      \
 #                       $primary{ }                             \
 #                       method{ format } format{ }              \
 #                       use_filesystem{ } filesystem{ xfs }     \
@@ -275,6 +276,45 @@ in-target update-grub
 
 d-i finish-install/reboot_in_progress
 ```
+
+# reference
+
+<https://wiki.debian.org/DebianInstaller/Preseed>
+
+<https://wiki.debian.org/DebianInstaller/NetworkConsole>
+
+<https://d-i.debian.org/manual/>
+
+<https://help.ubuntu.com/lts/installation-guide/amd64/apbs02.html>
+
+| boot aliases  | preseed options                     |
+| ------------- | ------------------------------------|
+| `priority`    | `debconf/priority`                  |
+| `fb`          | `debian-installer/framebuffer`      |
+| `language`    | `debian-installer/language`         |
+| `country`     | `debian-installer/country`          |
+| `locale`      | `debian-installer/locale`           |
+| `theme`       | `debian-installer/theme`            |
+| `auto`        | `auto-install/enable`               |
+| `classes`     | `auto-install/classes`              |
+| `file`        | `preseed/file`                      |
+| `url`         | `preseed/url`                       |
+| `domain`      | `netcfg/get_domain`                 |
+| `hostname`    | `netcfg/get_hostname`               |
+| `interface`   | `netcfg/choose_interface`           |
+| `protocol`    | `mirror/protocol`                   |
+| `suite`       | `mirror/suite`                      |
+| `modules`     | `anna/choose_modules`               |
+| `recommends`  | `base-installer/install-recommends` |
+| `tasks`       | `tasksel:tasksel/first`             |
+| `desktop`     | `tasksel:tasksel/desktop`           |
+| `dmraid`      | `disk-detect/dmraid/enable`         |
+| `keymap`      | `keyboard-configuration/xkb-keymap` |
+| `preseed-md5` | `preseed/file/checksum`             |
+
+
+
+<https://git.devuan.org/devuan/devuan-sdk/blob/master/seeds/netinst-auto>
 
 
 <br/>
