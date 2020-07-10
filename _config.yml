@@ -4,6 +4,7 @@
 # IMPORTANT: Set the URL of your site.
 # Set to https://<username>.github.io when hosting on GitHub Pages
 # (unless you are using a custom domain).
+
 url:                   https://lvii.github.io
 
 # IMPORTANT: Set The "base URL" of your site.
@@ -13,6 +14,10 @@ url:                   https://lvii.github.io
 # For GitHub project sites, this is usually the name of the project,
 # e.g. `/hydejack`.
 baseurl:               ''
+
+
+# General settings
+# ---------------------------------------------------------------------------------------
 
 # Language of your content in 2-letter code, e.g.: en, de.
 # You may also provide a location, e.g.: en-us, de_AT.
@@ -47,26 +52,52 @@ author:
 
 # Add links to the footer.
 # Typically you'll want to link to your cookie- or privacy policy (if appliable), etc..
-# legal:
-#   - title:             Impress
-#     url:               /impress/
-#   - title:             Cookies Policy
-#     url:               /cookies-policy/
+legal:
+  - title:             LICENSE
+    url:               /LICENSE/
+  - title:             NOTICE
+    url:               /NOTICE/
+  - title:             CHANGELOG
+    url:               /CHANGELOG/
 
 # This text will appear in a `<small>` tag in the footer of every page.
-copyright:             © 2019. All rights reserved.
+copyright:             © 2020. All rights reserved.
 
 # Format of the permalinks
 permalink:             /:categories/:year-:month-:day-:title/
 
 # Pagination configuration (used by the `blog` layout)
-paginate:              5
-paginate_path:         /page-:num/
+paginate:              10
+paginate_path:         /:num/
+
+
+# Collections
+# ----------------------------------------------------------------------------------------
+
+collections:
+  featured_categories:
+    permalink:         /:name/
+    output:            true
+
+  featured_tags:
+    permalink:         /tag-:name/
+    output:            true
+
+  projects:
+    permalink:         /projects/:path/
+    output:            true
+
+
+# Theme
+# ---------------------------------------------------------------------------------------
+
+# theme: jekyll-theme-hydejack
+remote_theme: hydecorp/hydejack@v9.0.3
 
 
 # Customizaton
-# ========================================================================================
-
+# ----------------------------------------------------------------------------------------
+ 
 # Sidebar image and theme color of the site.
 accent_image:          none
 accent_color:          '#3fa757'    ## green leaf
@@ -92,7 +123,32 @@ font:                  PT Sans, Noto Sans, Helvetica, Arial, sans-serif
 # To change font-weight, see _sass/variables.scss
 font_heading:          Roboto Slab, Helvetica, Arial, sans-serif
 
+# The font used for code blocks. Expects a string that is a valid CSS font-family value.
+font_code:             Fira Code, Menlo, Monaco, Consolas, monospace;
+
 defaults:
+  # You can use this to provide a default accent color and background for
+  # all pages under a given path:
+  - scope:
+      path:            hyde/
+    values:
+      accent_color:    rgb(38,139,210)
+      accent_image:
+        background:    rgb(32,32,32)
+        overlay:       false
+
+  # Don't include documents in assets in the sitemap
+  - scope:
+      path:            assets/
+    values:
+      sitemap:         false
+
+  # # You can use the following to enable comments on all posts.
+  # - scope:
+  #     type:            posts
+  #   values:
+  #     comments:        true
+
   # `jekyll-seo-tag` will mark collection outputs as `BlogPosting`,
   # but we want them to be `WebPage`s:
   - scope:
@@ -111,6 +167,11 @@ defaults:
       seo:
         type:          WebPage
 
+kramdown:
+  math_engine:         katex
+  math_engine_opts:    {}
+  footnote_backlink:   '&#x21a9;&#xfe0e;'
+
 
 # 3rd Party Integrations
 # ----------------------------------------------------------------------------------------
@@ -124,7 +185,9 @@ google_analytics:      UA-125236126-1
 disqus:                lvii
 
 # Setting a tinyletter username will enable the newsletter subscription box.
-# tinyletter:            <tinyletter_username>
+# PRO version only!
+# tinyletter:            <username>
+
 
 # Hydejack Settings
 # ----------------------------------------------------------------------------------------
@@ -132,14 +195,11 @@ disqus:                lvii
 
 hydejack:
   # Configure the order of complementary content on blog posts
-  # post_addons:         [about, newsletter, related, random]
+  # post_addons:         [about, newsletter, related, random, comments]
   post_addons:         []
 
   # Configure the order of complementary content on project pages
-  project_addons:      [about, newsletter, other]
-
-  # If you do not use Google Fonts, set to `true`.
-  no_google_fonts:     false
+  project_addons:      [about, newsletter, other, comments]
 
   # Set to `true` if you don't want to show an icon indicating external links
   no_mark_external:    false
@@ -153,17 +213,38 @@ hydejack:
   # Set to `true` to prevent usage of `hy-img` (lazy-loading images).
   no_img:              true
 
+  # Set to `true` if you don't to use the auto-hiding (JavaScript based) navbar.
+  # Note that this will not hide the navbar completely, only replace it with a static one.
+  # Use custom css to hide completely, e.g. `#_navbar { display: none }`.
+  no_navbar:           false
+
+  # Set to true to disable the built-in search functionality.
+  # Note that search is disabled during local use to save on build time.
+  # Run Jekyll with the `JEKYLL_ENV` environment variable set to `production` to enable.
+  no_search:           false
+
   # Set to `true` if you do not want parts of the css inlined in <head/>
   # This will increase site build speed dramatically!
   no_inline_css:       false
 
-  # Set to `true` if you don't intend on changing the accent color on a per-page basis.
+  # Set to `true` if you don't intend on changing the accent color on a per-page basis. 
   # This will increase site build speed!
   no_page_style:       false
 
   # Code blocks and tables "break" the layout by spanning the full available width.
   # Set this to true if you want them to be the same width as other content.
-  no_break_layout:     false
+  no_break_layout:     true
+
+  # Set to `true` to disable the dynamic Table of Contents on large screens.
+  no_toc:              false
+
+  # When set to `true`, will not extend the content in the "third column" on large screens.
+  # Instead, all content will remains within the center column.
+  # Note that this will not affect the Table of Contents, use `no_toc` instead.
+  no_third_column:     false
+
+  # Set to `true` if you don't like oversized headlines on large screens.
+  no_large_headings:   false
 
   # Set to `true` if you do not want to expose your resume and projects
   # in machine-readable formats.
@@ -174,28 +255,28 @@ hydejack:
   no_theme_color:      false
 
   # Set to `true` when building with the `--lsi` option
-  # This will increase site build speed!
-  use_lsi:             false
+  use_lsi:             true
 
   # When using Google Analytics, set to `true` to display a cookie notice banner.
   # When enabled, no user-related data will be stored until the user gives consent.
-  # Note that this works in the PRO version of Hydejack.
-  cookies_banner:      false
+  cookies_banner:      true
 
   # Set to `true` if you would like to add a "Powered by Hydejack" link in the footer.
-  # Note that this works in the PRO version of Hydejack.
+  # Note that this setting has no effect when using the free version.
   advertise:           false
 
-  # Dark Mode for Hydejack
-  # Note that this works in the PRO version of Hydejack.
+  # Buyers of the PRO version can opt to hide all dates from the theme.
+  # Frequent consumers of online content will know that nothing devalues a post like
+  # seeing an old date. 
+  hide_dates:          false
+
+  # Note that dark mode only works in the PRO version of Hydejack.
   dark_mode:
     # Set to `true` to always use the dark theme.
     always:            false
 
-    # Set to `true` to use the dark theme based on visitors' local time.
+    # Set to `true` to use the dark theme based on visitors' preference (OS setting).
     dynamic:           true
-    sunrise:           6
-    sunset:            18
 
     # Set to `true` to allow visitors to switch between light and dark mode.
     icon:              true
@@ -206,7 +287,9 @@ hydejack:
   # Only use if you know what Service Workers are and how they can impact your site!
   offline:
     enabled:           false
-    cache_version:     1
+    cache_version:     7
+    precache_assets:
+      - /assets/img/swipe.svg
 
 
 # Collections
@@ -227,26 +310,21 @@ collections:
 
 
 # File inclusion/exclusion
-# ========================================================================================
+# ----------------------------------------------------------------------------------------
 
 exclude:
+  - .jekyll-cache
+  - .sass-cache
   - vendor
   - Gemfile
   - Gemfile.lock
-  - node_modules
-  - package.json
-  - package-lock.json
-  - webpack.config.js
-  - "*.gemspec"
-  - _js
-  - _plugins
-  - .sass-cache
 include:
+  - .well-known
   - LICENSE.md
 
 
 # Plugins
-# ========================================================================================
+# ----------------------------------------------------------------------------------------
 
 plugins:
   - jekyll-default-layout
@@ -259,12 +337,9 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
   - jekyll-titles-from-headings
+  - jekyll-include-cache
+  - jekyll-last-modified-at
 
-# Theme
-# ---------------------------------------------------------------------------------------
-
-# theme: jekyll-theme-hydejack
-remote_theme: qwtel/hydejack@v8.5.2
 
 # SEO Tag
 # ---------------------------------------------------------------------------------------
@@ -278,11 +353,11 @@ remote_theme: qwtel/hydejack@v8.5.2
 #   alexa:               <verification-id>
 #   yandex:              <verification-id>
 
-# Used for Twitter cards
+# Used for twitter cards
 # twitter:
-#   username:            <shortname>
+#   username:            <username>
 
-# Used for Facebook open graph
+# Used for facebook open graph
 # facebook:
 #   app_id:              <id>
 #   publisher:           <id>
@@ -295,9 +370,8 @@ remote_theme: qwtel/hydejack@v8.5.2
 #     - https://github.com/lvii
 
 
-# Other Plugins
+# Plugin Configs
 # ---------------------------------------------------------------------------------------
-
 optional_front_matter:
   remove_originals:    true
 
@@ -313,13 +387,6 @@ titles_from_headings:
   strip_title:         false
   collections:         true
 
-kramdown:
-  footnote_backlink:   '&#x21a9;&#xfe0e;'
-  math_engine:         mathjax
-  math_engine_opts:
-    preview:           true
-    preview_as_code:   true
-
 compress_html:
   comments:            ["<!-- ", " -->"]
   clippings:           all
@@ -329,3 +396,34 @@ compress_html:
 
 sass:
   style:               compressed
+
+  
+# Jekyll Compose Defaults
+# ---------------------------------------------------------------------------------------
+
+jekyll_compose:
+  default_front_matter:
+    drafts:
+      layout: post
+      description: > 
+        A short ~160 character description of your post for search engines,
+        social media previews, etc.
+      image:
+        path: /assets/img/sidebar-bg.jpg
+    posts:
+      layout: post
+      description: > 
+        A short ~160 character description of your post for search engines,
+        social media previews, etc.
+      image:
+        path: /assets/img/sidebar-bg.jpg
+    projects:
+      layout: project
+      description: > 
+        A short ~160 character description of your post for search engines,
+        social media previews, etc.
+      image:
+        path: /assets/img/sidebar-bg.jpg
+      links:
+        - title: Project Link
+          url: https://example.com
