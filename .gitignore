@@ -52,6 +52,7 @@ vendor
 # delete from upstream example files
 _featured_categories/example.md
 _nojekyll/*
+docs/*
 assets/img/*
 example/*
 about.md
