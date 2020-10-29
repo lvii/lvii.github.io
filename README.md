@@ -264,3 +264,21 @@ https://fonts.google.com/specimen/Noto+Serif+SC
 ## build
 
     jekyll build -w
+
+[Ruby Gemfile 详解 2015-07-27](https://ruby-china.org/topics/26655)
+
+Pessimistically Greater Than or Equal To
+
+~> 操作能够让你使用这个 gem 的未来的某个安全的版本。如果你觉得使用一个大的版本更安全，你能够像下面这样声明.
+
+    gem "my_gem", "~> 2.0"
+
+这能够允许你安装任意的 2.x 版本的 gem，但是 3.x 版本是不被允许的。或许你对这么宽泛的版本感到不爽，你也可以声明一个更具体的版本，如下
+
+    gem "my_gem", "~> 2.5.0"
+
+这能够让你使用 2.5.0 到 2.6.0 之间的版本。下面的例子能够让你更加理解~> 操作符
+
+    * gem "my_gem", "~> 1.0" –> gem "my_gem", ">= 1.0", "< 2.0"
+    * gem "my_gem", "~> 1.5.0" –> gem "my_gem", ">= 1.5.0", "< 1.6.0"
+    * gem "my_gem", "~> 1.5.5" –> gem "my_gem", ">= 1.5.5", "< 1.6.0"
