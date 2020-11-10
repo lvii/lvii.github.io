@@ -54,11 +54,16 @@ table:not(.highlight) thead+tbody,table:not(.highlight) tbody+tbody,table:not(.h
   width: 50rem;
 }
 .title-list li a {
+  color: var(--accent-color);
   display: block;
   font-weight: 700;
   line-height: 1.75;
-  padding: .25rem 0;
+  padding: .32rem 0;
   font-family: Roboto Slab, Helvetica, Arial, sans-serif !important;
+  text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.75rem;
+  border-bottom: 1px solid;
   // enable 宋体
   // font-family: Roboto Slab, Noto Serif SC, Helvetica, Arial, sans-serif !important;
 }
@@ -67,8 +72,6 @@ table:not(.highlight) thead+tbody,table:not(.highlight) tbody+tbody,table:not(.h
   color: #888;
   font-family: PT Sans, Noto Sans, Helvetica, Arial, sans-serif !important;
 }
-
-
 
 .button {
   border-radius: 0.2em;
@@ -88,5 +91,12 @@ table:not(.highlight) thead+tbody,table:not(.highlight) tbody+tbody,table:not(.h
 
 .sidebar a {
   text-shadow: rgba(0, 0, 0, 0.25) 0.1rem 0.1rem 0.15rem;
+  // text-decoration: none;
+  // text-decoration-thickness: 1px;
+  // text-underline-offset: 0.75rem;
+  // color: #fff !important;
+  color: #ffffffe6 !important;
+  border-bottom: 1px solid;
+  padding-bottom: .5rem;
 }
 
