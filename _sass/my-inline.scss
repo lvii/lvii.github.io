@@ -90,13 +90,12 @@ table:not(.highlight) thead+tbody,table:not(.highlight) tbody+tbody,table:not(.h
 }
 
 .sidebar a {
-  text-shadow: rgba(0, 0, 0, 0.25) 0.1rem 0.1rem 0.15rem;
+  // text-shadow: rgba(0, 0, 0, 0.25) 0.1rem 0.1rem 0.15rem;
   // text-decoration: none;
   // text-decoration-thickness: 1px;
-  // text-underline-offset: 0.75rem;
+  text-underline-offset: 0.75rem;
   // color: #fff !important;
-  color: #ffffffe6 !important;
-  border-bottom: 1px solid;
-  padding-bottom: .5rem;
+  // color: #ffffffe6 !important;
+  // border-bottom: 1px solid;
 }
 
