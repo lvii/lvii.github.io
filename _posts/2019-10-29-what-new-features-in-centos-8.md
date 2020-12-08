@@ -228,6 +228,54 @@ Docker EE 支持 CentOS 8
     platform-python-3.6.8-4.el8_0.x86_64
     python36-3.6.8-2.module_el8.0.0+33+0a10c0e1.x86_64
 
+## network
+
+网络配置使用 `Networkmanager` 替换 `network-scripts` 脚本：
+
+    # yum whatprovides ifup
+
+    NetworkManager-1:1.22.8-5.el8_2.x86_64 : Network connection manager and user applications
+    Repo        : @System
+    Matched from:
+    Filename    : /usr/sbin/ifup
+
+    NetworkManager-1:1.22.8-5.el8_2.x86_64 : Network connection manager and user applications
+    Repo        : BaseOS
+    Matched from:
+    Filename    : /usr/sbin/ifup
+
+    network-scripts-10.00.6-1.el8_2.2.x86_64 : Legacy scripts for manipulating of network devices
+    Repo        : BaseOS
+    Matched from:
+    Filename    : /usr/sbin/ifup
+
+还弃用了 `bridge-utils` 工具 `brctl` 命令没了：
+
+    # rpm -qf `which bridge`
+    iproute-5.3.0-1.el8.x86_64
+
+    # bridge link show
+    2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 master br0 state forwarding priority 32 cost 100
+
+    # ip link show master br0
+    2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq master br0 state UP mode DEFAULT group default qlen 1000
+        link/ether 38:d5:67:c8:3c:e7 brd ff:ff:ff:ff:ff:ff
+
+    # nmcli -f bridge con show br0
+    bridge.mac-address:                     --
+    bridge.stp:                             no
+    bridge.priority:                        32768
+    bridge.forward-delay:                   15
+    bridge.hello-time:                      2
+    bridge.max-age:                         20
+    bridge.ageing-time:                     300
+    bridge.group-forward-mask:              0
+    bridge.multicast-snooping:              yes
+    bridge.vlan-filtering:                  no
+    bridge.vlan-default-pvid:               1
+    bridge.vlans:                           --
+
+
 <br/>
 
 本文标题 | [{{ page.title }}]({{ page.url }})
