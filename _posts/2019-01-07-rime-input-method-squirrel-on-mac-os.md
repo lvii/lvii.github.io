@@ -132,10 +132,23 @@ RIME 用户配置目录位于 `~/Library/Rime/` 相关的 YAML 配置文件：
 
 导入 sogou 码表的配置文件：
 
+
+    $ cat luna_pinyin.extended.dict.yaml
+    ---
+    name: luna_pinyin.extended
+    version: "2021.03.15"
+    sort: by_weight
+    use_preset_vocabulary: true
+
+    import_tables:
+      - luna_pinyin
+      - luna_pinyin.sogou
+    ...
+
     $ cat double_pinyin.custom.yaml
     patch:
       # 指定词库文件 luna_pinyin.sogou.dict.yaml
-      "translator/dictionary": luna_pinyin.sogou
+      "translator/dictionary": luna_pinyin.extended
 
 最终 `~/Library/Rime` 目录下面的文件：
 
@@ -143,10 +156,11 @@ RIME 用户配置目录位于 `~/Library/Rime/` 相关的 YAML 配置文件：
     total 174416
     drwxr-xr-x  13 mac  staff   416B  3 15 13:52 build/
     -rw-r--r--   1 mac  staff   125B  3 15 13:22 default.custom.yaml
-    -rw-r--r--   1 mac  staff   104B  3 15 13:50 double_pinyin.custom.yaml      <-- sogou 码表导入配置
+    -rw-r--r--   1 mac  staff   104B  3 15 13:50 double_pinyin.custom.yaml      <-- 导入 sogou + pinyin 扩展码表配置
     -rw-r--r--   1 mac  staff   3.0K  3 15 13:46 double_pinyin.schema.yaml      <-- 自然码双拼输入法配置
     -rw-r--r--   1 mac  staff   3.0K  3 15 11:27 double_pinyin.schema.yaml.ori
     -rw-r--r--   1 mac  staff   209B  3 15 11:26 installation.yaml
+    -rw-r--r--   1 mac  staff   589B  3 15 15:43 luna_pinyin.extended.dict.yaml <-- sogou + pinyin 扩展码表
     -rw-r--r--@  1 mac  staff    85M  3 15 11:44 luna_pinyin.sogou.dict.yaml    <-- sogou 码表文件
     drwxr-xr-x  11 mac  staff   352B  3 15 13:52 luna_pinyin.userdb/
     -rw-r--r--   1 mac  staff   1.0K  3 15 12:35 squirrel.custom.yaml
